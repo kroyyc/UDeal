@@ -12,3 +12,5 @@
     - Posts can have many different categories other than a course for more generalized things
     - Users can search posts by school, course, category, or keywords. 
 - Users can "like" other posts and see a list of their favourites for later.
+
+![](UDeal-ERD.png)
