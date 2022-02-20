@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using UDeal.Data;
 using UDeal.Models;
 
 namespace UDeal.Areas.Identity.Pages.Account
@@ -24,21 +26,26 @@ namespace UDeal.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        public IEnumerable<School> Schools { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -46,6 +53,14 @@ namespace UDeal.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "School")]
+            public int SchoolId { get; set; }
+
+            //[Required]
+            //[Display(Name = "Campus")]
+            //public int CampusId { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -67,6 +82,7 @@ namespace UDeal.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            Schools = _context.Schools.ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -75,11 +91,13 @@ namespace UDeal.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { UserName = Input.Email, Email = Input.Email, SchoolId = Input.SchoolId };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                await _userManager.AddToRoleAsync(user, "User");
                 if (result.Succeeded)
                 {
+
+                    //await _userManager.AddToRoleAsync(user, "Student");                    //await _userManager.AddToRoleAsync(user, "Student");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
