@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDeal.Data;
 
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220220211734_AddSchoolShortName")]
+    partial class AddSchoolShortName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,50 +168,6 @@ namespace UDeal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schools");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Domain = "ucalgary.ca",
-                            Name = "University of Calgary",
-                            ShortName = "UofC"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Domain = "ualberta.ca",
-                            Name = "University of Alberta",
-                            ShortName = "UofA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Domain = "edu.sait.ca",
-                            Name = "Southern Alberta Insitute of Technology",
-                            ShortName = "SAIT"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Domain = "nait.ca",
-                            Name = "Northern Alberta Insitute of Technology",
-                            ShortName = "NAIT"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Domain = "student.ubc.ca",
-                            Name = "University of British Columbia",
-                            ShortName = "UBC"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Domain = "mtroyal.ca",
-                            Name = "Mount Royal University",
-                            ShortName = "MRU"
-                        });
                 });
 
             modelBuilder.Entity("UDeal.Models.User", b =>

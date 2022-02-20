@@ -20,10 +20,12 @@ namespace UDeal.Pages.Manage.Schools
         }
 
         public IList<School> School { get;set; }
+        public IList<User> Users { get;set; }
 
         public async Task OnGetAsync()
         {
             School = await _context.Schools.ToListAsync();
+            Users = await _context.Users.ToListAsync(); 
         }
     }
 }

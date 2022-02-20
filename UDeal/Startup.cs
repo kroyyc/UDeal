@@ -41,7 +41,7 @@ namespace UDeal
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -67,7 +67,46 @@ namespace UDeal
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
             });
+
+            if (!roleManager.RoleExistsAsync("Student").Result)
+            {
+                roleManager.CreateAsync(new IdentityRole("Student"));
+            }
+
+            if (!roleManager.RoleExistsAsync("Moderator").Result)
+            {
+                roleManager.CreateAsync(new IdentityRole("Moderator"));
+            }
+
+            if (!roleManager.RoleExistsAsync("Admin").Result)
+            {
+                roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (userManager.FindByEmailAsync("admin@email.local").Result == null)
+            {
+
+                User admin = new User
+                {
+                    UserName = "admin@email.local",
+                    Email = "admin@email.local",
+                    EmailConfirmed = true,
+                };
+
+                IdentityResult result = userManager.CreateAsync(admin, "Admin123!").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(admin, "Admin");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to seed Admin user");
+                }
+
+            }
         }
     }
 }

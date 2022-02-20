@@ -12,14 +12,15 @@ namespace UDeal.Pages.Manage.Schools
 {
     public class DetailsModel : PageModel
     {
-        private readonly UDeal.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DetailsModel(UDeal.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public School School { get; set; }
+        public int NumUsers { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,6 +30,7 @@ namespace UDeal.Pages.Manage.Schools
             }
 
             School = await _context.Schools.FirstOrDefaultAsync(m => m.Id == id);
+            NumUsers = await _context.Users.Where(u => u.SchoolId == School.Id).CountAsync();
 
             if (School == null)
             {

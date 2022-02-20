@@ -13,6 +13,7 @@ namespace UDeal.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<School> Schools { get; set; }
+        public DbSet<IdentityRole> Roles { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -24,6 +25,8 @@ namespace UDeal.Data
             modelBuilder.Entity<User>(b => b.ToTable("Users"));
             modelBuilder.Entity<IdentityRole>(b => b.ToTable("Roles"));
             modelBuilder.Entity<IdentityUserRole<string>>(b => b.ToTable("UserRoles"));
+
+            modelBuilder.Seed();
         }
 
     }

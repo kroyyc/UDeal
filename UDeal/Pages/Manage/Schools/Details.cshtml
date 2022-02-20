@@ -18,10 +18,23 @@
             @Html.DisplayFor(model => model.School.Name)
         </dd>
         <dt class="col-sm-2">
+            @*@Html.DisplayNameFor(model => model.School.ShortName)*@
+            Short Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.School.ShortName)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.School.Domain)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.School.Domain)
+        </dd>
+        <dt class="col-sm-2">
+            Number of users
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumUsers)
         </dd>
     </dl>
 </div>

@@ -6,6 +6,7 @@ namespace UDeal.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ShortName { get; set; }
         public string Domain { get; set; }
         public List<User> Students { get; set; }
 
