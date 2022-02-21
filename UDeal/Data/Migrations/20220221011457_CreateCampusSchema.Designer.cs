@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDeal.Data;
 
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220221011457_CreateCampusSchema")]
+    partial class CreateCampusSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,12 +296,16 @@ namespace UDeal.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CampusId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("Users");
                 });
@@ -358,12 +364,34 @@ namespace UDeal.Data.Migrations
             modelBuilder.Entity("UDeal.Models.Campus", b =>
                 {
                     b.HasOne("UDeal.Models.School", "School")
-                        .WithMany()
+                        .WithMany("Campuses")
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("School");
+                });
+
+            modelBuilder.Entity("UDeal.Models.User", b =>
+                {
+                    b.HasOne("UDeal.Models.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId");
+
+                    b.HasOne("UDeal.Models.School", "School")
+                        .WithMany("Students")
+                        .HasForeignKey("SchoolId");
+
+                    b.Navigation("Campus");
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("UDeal.Models.School", b =>
+                {
+                    b.Navigation("Campuses");
+
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,8 @@ namespace UDeal.Models
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string Domain { get; set; }
-        public List<User> Students { get; set; }
 
+        //public virtual ICollection<User> Students { get; set; }
+        //public virtual ICollection<Campus> Campuses { get; set; }
     }
 }

@@ -49,7 +49,14 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-            SchoolName = _context.Schools.Find(user.SchoolId).Name;
+            if (user.SchoolId != null)
+            {
+                SchoolName = _context.Schools.Find(user.SchoolId).Name;
+            }
+            else
+            {
+                SchoolName = "N/A";
+            }
 
             Input = new InputModel
             {
