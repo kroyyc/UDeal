@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using UDeal.Models;
 
 namespace UDeal.Pages.Manage.Schools
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly UDeal.Data.ApplicationDbContext _context;

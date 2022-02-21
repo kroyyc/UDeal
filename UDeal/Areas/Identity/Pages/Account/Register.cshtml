@@ -14,11 +14,12 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.SchoolId"></label>
-                
-                <select asp-for="Input.SchoolId" asp-items="@(new SelectList(Model.Schools, "Id", "Name"))" class="form-control">
-                    <option value="">Pick One</option>
-                </select>
+                @if (Model.Schools != null && Model.Schools.Any())
+                {
+                    @Html.DropDownListFor(m => m.Input.SchoolId, (new SelectList(Model.Schools, "Id", "Name")), "Select School", new { @class = "form-control" })
 
+                }
+                @*<select asp-for="Input.SchoolId" asp-items="@(new SelectList(Model.Schools, "Id", "Name"))" class="form-control"></select>*@
                 <span asp-validation-for="Input.SchoolId" class="text-danger"></span>
             </div>
             

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UDeal.Data;
 using UDeal.Models;
 
 namespace UDeal.Areas.Identity.Pages.Account.Manage
@@ -14,16 +15,20 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public string Username { get; set; }
+        public string SchoolName { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -44,6 +49,7 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            SchoolName = _context.Schools.Find(user.SchoolId).Name;
 
             Input = new InputModel
             {

@@ -21,7 +21,7 @@ namespace UDeal
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.Database.Migrate();
+                db.Database.EnsureCreated();
             }
 
             host.Run();

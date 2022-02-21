@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -45,14 +46,44 @@ namespace UDeal.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public IEnumerable<School> Schools { get; set; }
+        public IEnumerable<School> Schools => _context.Schools.ToList();
 
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public class InputModel
+        public class MatchDomainAttribute : ValidationAttribute
         {
+            /// <summary>
+            /// This is to validate that the user's inputted school and email have matchin domains. Students can only register with
+            /// matching email. Then they must verify said email.
+            /// </summary>
+            
+            private readonly string _comparisonProp;
+            public MatchDomainAttribute(string comparisonProp)
+            {
+                _comparisonProp = comparisonProp;
+            }
+
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                string email = (string)value;
+                string emailDomain = email.Split('@')[1];
+
+                // Get the value of the inputted school
+                var prop = validationContext.ObjectType.GetProperty(_comparisonProp);
+                int schoolId = (int)prop.GetValue(validationContext.ObjectInstance);
+
+                // Get the school isntance from the db
+                var _context = (ApplicationDbContext)validationContext.GetService(typeof(ApplicationDbContext));
+                School school = _context.Schools.Find(schoolId);
+
+                return school.Domain.Equals(emailDomain) ? ValidationResult.Success : new ValidationResult("Email and school domain do not match. You must attend your selected school.");
+            }
+        }
+
+        public class InputModel
+        { 
             [Required]
             [Display(Name = "School")]
             public int SchoolId { get; set; }
@@ -64,6 +95,7 @@ namespace UDeal.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
+            [MatchDomain(nameof(SchoolId))]
             public string Email { get; set; }
 
             [Required]
@@ -82,7 +114,7 @@ namespace UDeal.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            Schools = _context.Schools.ToList();
+            //Schools = _context.Schools.ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -96,7 +128,7 @@ namespace UDeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
 
-                    //await _userManager.AddToRoleAsync(user, "Student");                    //await _userManager.AddToRoleAsync(user, "Student");
+                    await _userManager.AddToRoleAsync(user, "Student");     // new accounts are assumed to be a student                  
 
                     _logger.LogInformation("User created a new account with password.");
 
