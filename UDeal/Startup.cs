@@ -1,16 +1,18 @@
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UDeal.Data;
 using UDeal.Models;
-using UDeal.Services;
 
 namespace UDeal
 {
@@ -29,31 +31,13 @@ namespace UDeal
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddDatabaseDeveloperPageExceptionFilter();
-
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddTransient<IProfileService, ProfileService>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<User, ApplicationDbContext>()
-                .AddProfileService<ProfileService>();
-
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-
-            services.AddControllersWithViews();
+            services.AddControllers();
             services.AddRazorPages();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,39 +57,56 @@ namespace UDeal
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
 
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseIdentityServer();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
             });
 
-            app.UseSpa(spa =>
+            if (!roleManager.RoleExistsAsync("Student").Result)
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                roleManager.CreateAsync(new IdentityRole("Student"));
+            }
 
-                spa.Options.SourcePath = "ClientApp";
+            if (!roleManager.RoleExistsAsync("Moderator").Result)
+            {
+                roleManager.CreateAsync(new IdentityRole("Moderator"));
+            }
 
-                if (env.IsDevelopment())
+            if (!roleManager.RoleExistsAsync("Admin").Result)
+            {
+                roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (userManager.FindByEmailAsync("admin@email.local").Result == null)
+            {
+
+                User admin = new User
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    UserName = "admin@email.local",
+                    Email = "admin@email.local",
+                    EmailConfirmed = true,
+                };
+
+                IdentityResult result = userManager.CreateAsync(admin, "Admin123!").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(admin, "Admin");
                 }
-            });
+                else
+                {
+                    Console.WriteLine("Failed to seed Admin user");
+                }
 
-            SeedData.SeedUsers(userManager, roleManager);
-
+            }
         }
     }
 }

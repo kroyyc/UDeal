@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -12,6 +12,27 @@
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.SchoolId"></label>
+                @if (Model.Schools != null && Model.Schools.Any())
+                {
+                    @Html.DropDownListFor(m => m.Input.SchoolId, (new SelectList(Model.Schools, "Id", "Name")), "Select School", new { @class = "form-control" })
+
+                }
+                @*<select asp-for="Input.SchoolId" asp-items="@(new SelectList(Model.Schools, "Id", "Name"))" class="form-control"></select>*@
+                <span asp-validation-for="Input.SchoolId" class="text-danger"></span>
+            </div>
+            
+            @*<div class="form-group">
+                <label asp-for="Input.CampusId"></label>                
+                <select asp-for="Input.CampusId" asp-items="@(new SelectList(Model.CampusSelect, "Id", "Name"))" class="form-control">
+                    <option value="">Pick One</option>
+                </select>
+
+                <span asp-validation-for="Input.CampusId" class="text-danger"></span>
+            </div>   
+            *@
+
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />

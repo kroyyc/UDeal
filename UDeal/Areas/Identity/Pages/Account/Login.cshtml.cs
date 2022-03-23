@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using UDeal.Models;
-using System.Security.Claims;
 
 namespace UDeal.Areas.Identity.Pages.Account
 {
@@ -41,7 +40,6 @@ namespace UDeal.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
-        public ClaimsIdentity Subject { get; private set; }
 
         public class InputModel
         {

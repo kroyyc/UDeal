@@ -1,0 +1,44 @@
+﻿@page
+@model UDeal.Pages.Manage.Schools.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>School</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="School.Name" class="control-label"></label>
+                <input asp-for="School.Name" class="form-control" />
+                <span asp-validation-for="School.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="School.ShortName" class="control-label">Short Name</label>
+                <input asp-for="School.ShortName" class="form-control" />
+                <span asp-validation-for="School.ShortName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="School.Domain" class="control-label"></label>
+                <input asp-for="School.Domain" class="form-control" />
+                <span asp-validation-for="School.Domain" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
