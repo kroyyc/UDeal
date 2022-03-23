@@ -1,14 +1,10 @@
-﻿
-namespace UDeal.Models
+﻿namespace UDeal.Models
 {
-    public class Campus
+    public class Course
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string City {  get; set; }
-
         public int SchoolId { get; set; }
         public School School { get; set; }
-
     }
 }

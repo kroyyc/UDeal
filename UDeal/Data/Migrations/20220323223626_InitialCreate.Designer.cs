@@ -9,14 +9,29 @@ using UDeal.Data;
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220220212149_SeedSchoolsTable")]
-    partial class SeedSchoolsTable
+    [Migration("20220323223626_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.12");
+
+            modelBuilder.Entity("CategoryPost", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CategoriesId", "PostsId");
+
+                    b.HasIndex("PostsId");
+
+                    b.ToTable("CategoryPost");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -150,6 +165,135 @@ namespace UDeal.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("UDeal.Models.Campus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Campuses");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AlternateEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Favourite", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Favs");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Condition")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Post");
+                });
+
             modelBuilder.Entity("UDeal.Models.School", b =>
                 {
                     b.Property<int>("Id")
@@ -168,50 +312,6 @@ namespace UDeal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schools");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Domain = "ucalgary.ca",
-                            Name = "University of Calgary",
-                            ShortName = "UofC"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Domain = "ualberta.ca",
-                            Name = "University of Alberta",
-                            ShortName = "UofA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Domain = "edu.sait.ca",
-                            Name = "Southern Alberta Insitute of Technology",
-                            ShortName = "SAIT"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Domain = "nait.ca",
-                            Name = "Northern Alberta Insitute of Technology",
-                            ShortName = "NAIT"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Domain = "student.ubc.ca",
-                            Name = "University of British Columbia",
-                            ShortName = "UBC"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Domain = "mtroyal.ca",
-                            Name = "Mount Royal University",
-                            ShortName = "MRU"
-                        });
                 });
 
             modelBuilder.Entity("UDeal.Models.User", b =>
@@ -220,6 +320,9 @@ namespace UDeal.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CampusId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -271,6 +374,8 @@ namespace UDeal.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CampusId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -281,6 +386,44 @@ namespace UDeal.Data.Migrations
                     b.HasIndex("SchoolId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Looking", b =>
+                {
+                    b.HasBaseType("UDeal.Models.Post");
+
+                    b.Property<int>("MaxPrice")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MinPrice")
+                        .HasColumnType("INTEGER");
+
+                    b.HasDiscriminator().HasValue("Looking");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Selling", b =>
+                {
+                    b.HasBaseType("UDeal.Models.Post");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("INTEGER");
+
+                    b.HasDiscriminator().HasValue("Selling");
+                });
+
+            modelBuilder.Entity("CategoryPost", b =>
+                {
+                    b.HasOne("UDeal.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UDeal.Models.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -334,18 +477,78 @@ namespace UDeal.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UDeal.Models.User", b =>
+            modelBuilder.Entity("UDeal.Models.Campus", b =>
                 {
                     b.HasOne("UDeal.Models.School", "School")
-                        .WithMany("Students")
-                        .HasForeignKey("SchoolId");
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("School");
                 });
 
-            modelBuilder.Entity("UDeal.Models.School", b =>
+            modelBuilder.Entity("UDeal.Models.Contact", b =>
                 {
-                    b.Navigation("Students");
+                    b.HasOne("UDeal.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Course", b =>
+                {
+                    b.HasOne("UDeal.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Favourite", b =>
+                {
+                    b.HasOne("UDeal.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UDeal.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UDeal.Models.Post", b =>
+                {
+                    b.HasOne("UDeal.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UDeal.Models.User", b =>
+                {
+                    b.HasOne("UDeal.Models.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId");
+
+                    b.HasOne("UDeal.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
+
+                    b.Navigation("Campus");
+
+                    b.Navigation("School");
                 });
 #pragma warning restore 612, 618
         }

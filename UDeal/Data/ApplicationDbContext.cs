@@ -14,8 +14,15 @@ namespace UDeal.Data
         public DbSet<User> Users { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Selling> SellingPosts { get; set; }
+        public DbSet<Looking> LookingPosts { get; set;}
+        public DbSet<Campus> Campuses { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Favourite> Favs { get; set; }  
 
-        public DbSet<Campus> Campuses { get; set; } 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -28,7 +35,9 @@ namespace UDeal.Data
             modelBuilder.Entity<IdentityRole>(b => b.ToTable("Roles"));
             modelBuilder.Entity<IdentityUserRole<string>>(b => b.ToTable("UserRoles"));
 
-            modelBuilder.Seed();
+            modelBuilder.Entity<Favourite>().HasKey(o => new { o.UserId, o.PostId });
+
+            //modelBuilder.Seed();
         }
 
     }
