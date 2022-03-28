@@ -28,7 +28,8 @@ namespace UDeal.Pages.Posts
                 return NotFound();
             }
 
-            Post = await _context.Posts.FirstOrDefaultAsync(m => m.Id == id);
+            Post = await _context.Posts
+                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Post == null)
             {

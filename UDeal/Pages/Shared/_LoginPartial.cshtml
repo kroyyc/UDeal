@@ -6,20 +6,27 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Posts/Create">+ New Post</a>
+    </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
           Manage
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a  class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Index">My Posts</a>
+            <a  class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Favourites">My Favourites</a>
+
+            <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Identity">My Account</a>
             @if (User.IsInRole("Admin"))
             {
+                <div class="dropdown-divider"></div>
                 <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">Schools</a>
                 <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">Campuses</a>
-                <div class="dropdown-divider"></div>
             }
-            <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Identity">Account</a>
+            
         </div>
-      </li>
+    </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>

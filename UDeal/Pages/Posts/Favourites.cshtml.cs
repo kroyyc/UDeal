@@ -10,11 +10,11 @@ using UDeal.Models;
 
 namespace UDeal.Pages.Posts
 {
-    public class IndexModel : PageModel
+    public class FavouritesModel : PageModel
     {
         private readonly UDeal.Data.ApplicationDbContext _context;
 
-        public IndexModel(UDeal.Data.ApplicationDbContext context)
+        public FavouritesModel(UDeal.Data.ApplicationDbContext context)
         {
             _context = context;
         }
