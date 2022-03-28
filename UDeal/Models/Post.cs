@@ -18,6 +18,17 @@ namespace UDeal.Models
       
     }
 
+    public class PostDTO
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int Quantity { get; set; }
+        public Condition Condition { get; set; }
+        public string UserId { get; set; }
+        public ICollection<Category> Categories { get; set; }
+    }
+
     public class Selling : Post 
     {
         public int Price { get; set; }

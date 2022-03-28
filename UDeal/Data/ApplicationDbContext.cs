@@ -40,5 +40,9 @@ namespace UDeal.Data
             //modelBuilder.Seed();
         }
 
+        public DbSet<UDeal.Models.CampusDTO> CampusDTO { get; set; }
+
+        public DbSet<UDeal.Models.CategoryDTO> CategoryDTO { get; set; }
+
     }
 }
