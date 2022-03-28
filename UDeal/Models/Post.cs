@@ -35,7 +35,7 @@ namespace UDeal.Models
         public int? MaxPrice { get; set; }
         public PostType Type { get; set; }
         public string UserId { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public IEnumerable<int> Categories { get; set; }
     }
 
     public enum PostType
