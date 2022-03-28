@@ -15,8 +15,8 @@ namespace UDeal.Data
         public DbSet<School> Schools { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Selling> SellingPosts { get; set; }
-        public DbSet<Looking> LookingPosts { get; set;}
+        //public DbSet<Selling> SellingPosts { get; set; }
+        //public DbSet<Looking> LookingPosts { get; set;}
         public DbSet<Campus> Campuses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -39,10 +39,5 @@ namespace UDeal.Data
 
             //modelBuilder.Seed();
         }
-
-        public DbSet<UDeal.Models.CampusDTO> CampusDTO { get; set; }
-
-        public DbSet<UDeal.Models.CategoryDTO> CategoryDTO { get; set; }
-
     }
 }
