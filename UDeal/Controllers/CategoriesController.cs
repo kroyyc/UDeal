@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .Select(c => ItemToDTO(c))
+                .ToListAsync();
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
 
@@ -39,20 +41,27 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return category;
+            return ItemToDTO(category);
         }
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, CategoryDTO categoryDTO)
         {
-            if (id != category.Id)
+            if (id != categoryDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            category.Name = categoryDTO.Name;
 
             try
             {
@@ -76,12 +85,13 @@ namespace UDeal.Controllers
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<CategoryDTO>> PostCategory(Category categoryDTO)
         {
+            var category = new Category { Name = categoryDTO.Name };
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, ItemToDTO(category));
         }
 
         // DELETE: api/Categories/5
@@ -104,5 +114,12 @@ namespace UDeal.Controllers
         {
             return _context.Categories.Any(e => e.Id == id);
         }
+
+        private static CategoryDTO ItemToDTO(Category category) =>
+            new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+            };
     }
 }

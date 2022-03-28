@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPosts()
         {
-            return await _context.Posts.ToListAsync();
+            return await _context.Posts
+                .Select(p => ItemToDTO(p))
+                .ToListAsync();
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public async Task<ActionResult<PostDTO>> GetPost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
 
@@ -39,21 +41,35 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return post;
+            return ItemToDTO(post);
         }
 
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        public async Task<IActionResult> PutPost(int id, PostDTO postDTO)
         {
-            if (id != post.Id)
+            if (id != postDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(post).State = EntityState.Modified;
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
 
+            post.Quantity = postDTO.Quantity;
+            post.Condition = postDTO.Condition;
+            post.Description = postDTO.Description;
+            post.Title = postDTO.Title;
+            post.Categories = postDTO.Categories;
+            post.Price = postDTO.Price;
+            post.MaxPrice = postDTO.MaxPrice;
+            post.MinPrice = postDTO.MinPrice;
+            post.Type = postDTO.Type;
+          
             try
             {
                 await _context.SaveChangesAsync();
@@ -76,12 +92,25 @@ namespace UDeal.Controllers
         // POST: api/Posts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Post>> PostPost(Post post)
+        public async Task<ActionResult<PostDTO>> PostPost(PostDTO postDTO)
         {
+            var post = new Post
+            {
+                Title = postDTO.Title,
+                Description = postDTO.Description,
+                Quantity = postDTO.Quantity,
+                Condition = postDTO.Condition,
+                Price = postDTO.Price,
+                Categories = postDTO.Categories,
+                MaxPrice = postDTO.MaxPrice,
+                MinPrice = postDTO.MinPrice,
+                UserId = postDTO.UserId,
+                Type = postDTO.Type
+            };
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPost", new { id = post.Id }, post);
+            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, ItemToDTO(post));
         }
 
         // DELETE: api/Posts/5
@@ -104,5 +133,21 @@ namespace UDeal.Controllers
         {
             return _context.Posts.Any(e => e.Id == id);
         }
+
+        private static PostDTO ItemToDTO(Post post) =>
+            new PostDTO
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Description = post.Description,
+                Quantity = post.Quantity,
+                Condition = post.Condition,
+                UserId = post.UserId,
+                Categories = post.Categories,
+                Price = post.Price,
+                MaxPrice = post.MaxPrice,
+                MinPrice = post.MinPrice,
+                Type = post.Type,
+            };
     }
 }

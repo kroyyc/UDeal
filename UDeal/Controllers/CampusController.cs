@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Campus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Campus>>> GetCampuses()
+        public async Task<ActionResult<IEnumerable<CampusDTO>>> GetCampuses()
         {
-            return await _context.Campuses.ToListAsync();
+            return await _context.Campuses
+                .Select(c => ItemToDTO(c))
+                .ToListAsync();
         }
 
         // GET: api/Campus/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Campus>> GetCampus(int id)
+        public async Task<ActionResult<CampusDTO>> GetCampus(int id)
         {
             var campus = await _context.Campuses.FindAsync(id);
 
@@ -39,20 +41,28 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return campus;
+            return ItemToDTO(campus);
         }
 
         // PUT: api/Campus/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCampus(int id, Campus campus)
+        public async Task<IActionResult> PutCampus(int id, CampusDTO campusDTO)
         {
-            if (id != campus.Id)
+            if (id != campusDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(campus).State = EntityState.Modified;
+            var campus = await _context.Campuses.FindAsync(id);
+
+            if (campus == null) {
+                return NotFound();
+            }
+
+            campus.City = campusDTO.City;
+            campus.Name = campusDTO.Name;
+            campus.SchoolId = campusDTO.SchoolId;
 
             try
             {
@@ -76,12 +86,20 @@ namespace UDeal.Controllers
         // POST: api/Campus
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Campus>> PostCampus(Campus campus)
+        public async Task<ActionResult<CampusDTO>> PostCampus(CampusDTO campusDTO)
         {
+            var campus = new Campus
+            {
+                Id = campusDTO.Id,
+                Name = campusDTO.Name,
+                SchoolId = campusDTO.SchoolId,
+                City = campusDTO.City
+            };
+
             _context.Campuses.Add(campus);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCampus", new { id = campus.Id }, campus);
+            return CreatedAtAction(nameof(GetCampus), new { id = campus.Id }, ItemToDTO(campus));
         }
 
         // DELETE: api/Campus/5
@@ -104,5 +122,14 @@ namespace UDeal.Controllers
         {
             return _context.Campuses.Any(e => e.Id == id);
         }
+
+        private static CampusDTO ItemToDTO(Campus campus) =>
+            new CampusDTO
+            {
+                Id = campus.Id,
+                Name = campus.Name,
+                City = campus.City,
+                SchoolId = campus.SchoolId
+            };
     }
 }

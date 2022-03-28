@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UDeal.Models
 {
@@ -11,6 +10,12 @@ namespace UDeal.Models
         public int Quantity { get; set; }
         public Condition Condition { get; set; }
 
+        public int? Price { get; set; }
+        public int? MinPrice { get; set; }
+        public int? MaxPrice { get; set; }
+
+        public PostType Type { get; set; }
+
         public string UserId { get; set; }
         public User User { get; set; }
 
@@ -18,15 +23,25 @@ namespace UDeal.Models
       
     }
 
-    public class Selling : Post 
+    public class PostDTO
     {
-        public int Price { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int Quantity { get; set; }
+        public Condition Condition { get; set; }
+        public int? Price { get; set; }
+        public int? MinPrice { get; set; }
+        public int? MaxPrice { get; set; }
+        public PostType Type { get; set; }
+        public string UserId { get; set; }
+        public ICollection<Category> Categories { get; set; }
     }
 
-    public class Looking : Post
+    public enum PostType
     {
-        public int MinPrice { get; set; }
-        public int MaxPrice { get; set; }   
+        Selling, 
+        Looking
     }
 
     public enum Condition

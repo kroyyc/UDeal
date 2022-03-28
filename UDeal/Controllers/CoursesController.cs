@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Select(c => ItemToDTO(c))
+                .ToListAsync();
         }
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(int id)
+        public async Task<ActionResult<CourseDTO>> GetCourse(int id)
         {
             var course = await _context.Courses.FindAsync(id);
 
@@ -39,20 +41,27 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return course;
+            return ItemToDTO(course);
         }
 
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, Course course)
+        public async Task<IActionResult> PutCourse(int id, CourseDTO courseDTO)
         {
-            if (id != course.Id)
+            if (id != courseDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            course.SchoolId = courseDTO.SchoolId;
+            course.Name = courseDTO.Name;
 
             try
             {
@@ -76,12 +85,18 @@ namespace UDeal.Controllers
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<CourseDTO>> PostCourse(CourseDTO courseDTO)
         {
+            var course = new Course
+            {
+                Name = courseDTO.Name,
+                SchoolId = courseDTO.SchoolId,
+                School = _context.Schools.Find(courseDTO.SchoolId)
+            };
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction(nameof(GetCourse), new { id = course.Id }, ItemToDTO(course));
         }
 
         // DELETE: api/Courses/5
@@ -104,5 +119,13 @@ namespace UDeal.Controllers
         {
             return _context.Courses.Any(e => e.Id == id);
         }
+
+        private static CourseDTO ItemToDTO(Course course) =>
+            new CourseDTO
+            {
+                Id = course.Id,
+                Name = course.Name,
+                SchoolId = course.SchoolId,
+            };
     }
 }

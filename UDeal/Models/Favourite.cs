@@ -11,4 +11,10 @@ namespace UDeal.Models
         public Post Post { get; set; }
 
     }
+
+    public class FavouriteDTO
+    {
+        public string UserId { get; set; }
+        public int PostId { get; set; }
+    }
 }

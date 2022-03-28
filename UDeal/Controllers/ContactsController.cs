@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Contacts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
+        public async Task<ActionResult<IEnumerable<ContactDTO>>> GetContacts()
         {
-            return await _context.Contacts.ToListAsync();
+            return await _context.Contacts
+                .Select(c => ItemToDTO(c))
+                .ToListAsync();
         }
 
         // GET: api/Contacts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContact(int id)
+        public async Task<ActionResult<ContactDTO>> GetContact(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
 
@@ -39,20 +41,28 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return contact;
+            return ItemToDTO(contact);
         }
 
         // PUT: api/Contacts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContact(int id, Contact contact)
+        public async Task<IActionResult> PutContact(int id, ContactDTO contactDTO)
         {
-            if (id != contact.Id)
+            if (id != contactDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(contact).State = EntityState.Modified;
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            contact.PhoneNumber = contactDTO.PhoneNumber;
+            contact.AlternateEmail = contactDTO.AlternateEmail;
+            contact.Address = contactDTO.Address;
 
             try
             {
@@ -76,12 +86,18 @@ namespace UDeal.Controllers
         // POST: api/Contacts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Contact>> PostContact(Contact contact)
+        public async Task<ActionResult<ContactDTO>> PostContact(ContactDTO contactDTO)
         {
+            var contact = new Contact
+            {
+                Address = contactDTO.Address,
+                PhoneNumber = contactDTO.PhoneNumber,
+                AlternateEmail = contactDTO.AlternateEmail
+            };
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
+            return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, ItemToDTO(contact));
         }
 
         // DELETE: api/Contacts/5
@@ -104,5 +120,15 @@ namespace UDeal.Controllers
         {
             return _context.Contacts.Any(e => e.Id == id);
         }
+
+        private static ContactDTO ItemToDTO(Contact contact) =>
+            new ContactDTO
+            {
+                Id = contact.Id,
+                PhoneNumber = contact.PhoneNumber,
+                Address = contact.Address,
+                AlternateEmail = contact.AlternateEmail,    
+                UserId = contact.UserId,
+            };
     }
 }
