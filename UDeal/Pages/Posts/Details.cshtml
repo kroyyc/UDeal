@@ -3,13 +3,21 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    void AddToFavourites()
+    {
+        Console.WriteLine("Fav click");
+    }
 }
 
+
 <h1>Details</h1>
+
 
 <div>
     <h4>Post</h4>
     <hr />
+    <img src="https://via.placeholder.com/300"/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Title)
@@ -35,24 +43,31 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Post.Condition)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.MinPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.MinPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.MaxPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.MaxPrice)
-        </dd>
+
+        @if (Model.Post.Type == Models.PostType.Selling)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.Price)
+            </dt>
+            <dd class="col-sm-10">
+                $@Html.DisplayFor(model => model.Post.Price)
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.MinPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Post.MinPrice)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.MaxPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Post.MaxPrice)
+            </dd>
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Type)
         </dt>
@@ -60,10 +75,10 @@
             @Html.DisplayFor(model => model.Post.Type)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.User)
+            @Html.DisplayNameFor(model => model.Post.Category)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.User.Id)
+            @Html.DisplayFor(model => model.Post.Category.Name)
         </dd>
     </dl>
 </div>

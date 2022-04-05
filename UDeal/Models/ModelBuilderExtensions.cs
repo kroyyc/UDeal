@@ -17,8 +17,11 @@ namespace UDeal.Models
                 new School { Id = 8, Name = "University of Victoria", ShortName = "UVic", Domain = "uvic.ca" }
             );
 
-           
-
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Textbooks" },
+                new Category { Id = 2, Name = "Electronics" },
+                new Category { Id = 3, Name = "Furniture" }
+            );
         }
     }
 }

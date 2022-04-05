@@ -21,8 +21,10 @@
             @if (User.IsInRole("Admin"))
             {
                 <div class="dropdown-divider"></div>
-                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">Schools</a>
-                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">Campuses</a>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">All Schools</a>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">All Campuses</a>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Categories/Index" title="Manage">All Categories</a>
+
             }
             
         </div>

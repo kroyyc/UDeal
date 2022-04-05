@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using UDeal.Data;
 using UDeal.Models;
 
-namespace UDeal.Pages.Manage.Campuses
+namespace UDeal.Pages.Manage.Categories
 {
     public class CreateModel : PageModel
     {
@@ -21,12 +21,11 @@ namespace UDeal.Pages.Manage.Campuses
 
         public IActionResult OnGet()
         {
-            ViewData["SchoolId"] = new SelectList(_context.Schools, "Id", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Campus Campus { get; set; }
+        public Category Category { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +35,7 @@ namespace UDeal.Pages.Manage.Campuses
                 return Page();
             }
 
-            _context.Campuses.Add(Campus);
+            _context.Categories.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

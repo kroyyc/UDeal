@@ -37,10 +37,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Type)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Post[0].User)
-            </th>
-            <th></th>
+            </th>*@
+            @*<th></th>*@
         </tr>
     </thead>
     <tbody>
@@ -70,14 +70,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
+            </td>*@
+            @*<td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>

@@ -64,7 +64,7 @@ namespace UDeal.Controllers
             post.Condition = postDTO.Condition;
             post.Description = postDTO.Description;
             post.Title = postDTO.Title;
-            post.Categories = _context.Categories.Where(c => postDTO.Categories.Contains(c.Id)).ToList();
+            post.Category = _context.Categories.Find(postDTO.CategoryId);
             post.Price = postDTO.Price;
             post.MaxPrice = postDTO.MaxPrice;
             post.MinPrice = postDTO.MinPrice;
@@ -101,7 +101,7 @@ namespace UDeal.Controllers
                 Quantity = postDTO.Quantity,
                 Condition = postDTO.Condition,
                 Price = postDTO.Price,
-                Categories = _context.Categories.Where(c => postDTO.Categories.Contains(c.Id)).ToList(),
+                Category = _context.Categories.Find(postDTO.CategoryId),
                 MaxPrice = postDTO.MaxPrice,
                 MinPrice = postDTO.MinPrice,
                 UserId = postDTO.UserId,
@@ -143,7 +143,7 @@ namespace UDeal.Controllers
                 Quantity = post.Quantity,
                 Condition = post.Condition,
                 UserId = post.UserId,
-                Categories = post.Categories.Select(c => c.Id),
+                CategoryId = post.CategoryId,
                 Price = post.Price,
                 MaxPrice = post.MaxPrice,
                 MinPrice = post.MinPrice,

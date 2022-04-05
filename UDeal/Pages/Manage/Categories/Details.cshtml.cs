@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using UDeal.Data;
 using UDeal.Models;
 
-namespace UDeal.Pages.Posts
+namespace UDeal.Pages.Manage.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace UDeal.Pages.Posts
             _context = context;
         }
 
-        public Post Post { get; set; }
+        public Category Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,10 +28,9 @@ namespace UDeal.Pages.Posts
                 return NotFound();
             }
 
-            Post = await _context.Posts
-                .Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
+            Category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Post == null)
+            if (Category == null)
             {
                 return NotFound();
             }

@@ -37,7 +37,7 @@ namespace UDeal.Data
 
             modelBuilder.Entity<Favourite>().HasKey(o => new { o.UserId, o.PostId });
 
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
         }
     }
 }

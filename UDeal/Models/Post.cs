@@ -19,8 +19,8 @@ namespace UDeal.Models
         public string UserId { get; set; }
         public User User { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
-      
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 
     public class PostDTO
@@ -35,7 +35,7 @@ namespace UDeal.Models
         public int? MaxPrice { get; set; }
         public PostType Type { get; set; }
         public string UserId { get; set; }
-        public IEnumerable<int> Categories { get; set; }
+        public int CategoryId { get; set; }
     }
 
     public enum PostType
