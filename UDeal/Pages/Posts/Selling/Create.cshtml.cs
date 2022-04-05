@@ -44,7 +44,7 @@ namespace UDeal.Pages.Posts
             _context.Posts.Add(Post);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Posts/Index");
         }
     }
 }
