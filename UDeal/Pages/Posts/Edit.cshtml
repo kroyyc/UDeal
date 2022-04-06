@@ -44,22 +44,28 @@
                 <label asp-for="Post.CategoryId" class="control-label">Category</label>
                 <select asp-for="Post.CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="Post.Price" class="control-label"></label>
-                <input asp-for="Post.Price" class="form-control" />
-                <span asp-validation-for="Post.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Post.MinPrice" class="control-label"></label>
-                <input asp-for="Post.MinPrice" class="form-control" />
-                <span asp-validation-for="Post.MinPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Post.MaxPrice" class="control-label"></label>
-                <input asp-for="Post.MaxPrice" class="form-control" />
-                <span asp-validation-for="Post.MaxPrice" class="text-danger"></span>
-            </div>
-            
+            @if (Model.Post.Type == PostType.Selling)
+            {
+                <div class="form-group">
+                    <label asp-for="Post.Price" class="control-label"></label>
+                    <input asp-for="Post.Price" class="form-control" />
+                    <span asp-validation-for="Post.Price" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Post.MinPrice" class="control-label"></label>
+                    <input asp-for="Post.MinPrice" class="form-control" />
+                    <span asp-validation-for="Post.MinPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Post.MaxPrice" class="control-label"></label>
+                    <input asp-for="Post.MaxPrice" class="form-control" />
+                    <span asp-validation-for="Post.MaxPrice" class="text-danger"></span>
+                </div>      
+            }
+             
             <input type="hidden" asp-for="Post.UserId" value="@ViewBag.UserId" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
