@@ -2,19 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDeal.Data;
 
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220329212702_AlterCategorySchema")]
+    partial class AlterCategorySchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.15");
+                .HasAnnotation("ProductVersion", "5.0.12");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -182,23 +184,6 @@ namespace UDeal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Textbooks"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Electronics"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Furniture"
-                        });
                 });
 
             modelBuilder.Entity("UDeal.Models.Contact", b =>
@@ -258,25 +243,6 @@ namespace UDeal.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Favs");
-                });
-
-            modelBuilder.Entity("UDeal.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("UDeal.Models.Post", b =>
@@ -342,64 +308,6 @@ namespace UDeal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schools");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Domain = "ucalgary.ca",
-                            Name = "University of Calgary",
-                            ShortName = "UofC"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Domain = "ualberta.ca",
-                            Name = "University of Alberta",
-                            ShortName = "UofA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Domain = "edu.sait.ca",
-                            Name = "Southern Alberta Insitute of Technology",
-                            ShortName = "SAIT"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Domain = "nait.ca",
-                            Name = "Northern Alberta Insitute of Technology",
-                            ShortName = "NAIT"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Domain = "student.ubc.ca",
-                            Name = "University of British Columbia",
-                            ShortName = "UBC"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Domain = "mtroyal.ca",
-                            Name = "Mount Royal University",
-                            ShortName = "MRU"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Domain = "mail.usask.ca",
-                            Name = "University of Saskatchewan",
-                            ShortName = "USask"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Domain = "uvic.ca",
-                            Name = "University of Victoria",
-                            ShortName = "UVic"
-                        });
                 });
 
             modelBuilder.Entity("UDeal.Models.User", b =>
@@ -575,17 +483,6 @@ namespace UDeal.Data.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UDeal.Models.Image", b =>
-                {
-                    b.HasOne("UDeal.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("UDeal.Models.Post", b =>

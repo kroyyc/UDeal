@@ -37,7 +37,11 @@ namespace UDeal
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllers();
-            services.AddRazorPages();
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Posts");
+                options.Conventions.AuthorizeFolder("/Manage");
+            });
 
             services.AddSwaggerGen();
         }

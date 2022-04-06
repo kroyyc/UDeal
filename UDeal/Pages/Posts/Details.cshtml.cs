@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,28 +14,77 @@ namespace UDeal.Pages.Posts
     public class DetailsModel : PageModel
     {
         private readonly UDeal.Data.ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;    
 
-        public DetailsModel(UDeal.Data.ApplicationDbContext context)
+        public DetailsModel(UserManager<User> userManager, UDeal.Data.ApplicationDbContext context, SignInManager<User> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public Post Post { get; set; }
+        public bool IsFav { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
+            ViewData["ImagePath"] = "/images/" + (image.Name ?? "https://via.placeholder.com/300");
+            
             if (id == null)
             {
                 return NotFound();
             }
 
-            Post = await _context.Posts.FirstOrDefaultAsync(m => m.Id == id);
+            Post = await _context.Posts
+                .Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
+
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                IsFav = _context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any();
+            }
+         
 
             if (Post == null)
             {
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostRemove(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            _context.Favs.Remove(new Favourite
+            {
+                PostId = id,
+                UserId = user.Id
+            });
+            await _context.SaveChangesAsync();
+            return Redirect("/Posts/Favourites");
+        }
+
+        public async Task<IActionResult> OnPostFav(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            if (!_context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any())
+            {
+                var fav = new Favourite
+                {
+                    PostId = id,
+                    Post = _context.Posts.Find(id),
+                    UserId = user.Id,
+                    User = user
+                };
+                _context.Favs.Add(fav);
+                await _context.SaveChangesAsync();
+            }
+
+            return Redirect("/Posts/Favourites");
         }
     }
 }

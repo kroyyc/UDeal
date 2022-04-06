@@ -1,0 +1,84 @@
+﻿@page
+@model UDeal.Pages.Posts.FavouritesModel
+
+@{
+    ViewData["Title"] = "Favourites";
+}
+
+<h1>Favourites</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Condition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Type)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Post[0].User)
+            </th>*@
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Post) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>*@
+            @*<td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>

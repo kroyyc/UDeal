@@ -1,15 +1,18 @@
 ﻿@page
 @model UDeal.Pages.Posts.IndexModel
+@using UDeal.Models
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Posts";
 }
 
-<h1>Index</h1>
+<h1>My Posts</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<h3>Selling</h3>
 <table class="table">
     <thead>
         <tr>
@@ -20,13 +23,31 @@
                 @Html.DisplayNameFor(model => model.Post[0].Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].UserId)
+                @Html.DisplayNameFor(model => model.Post[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Condition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Price)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model.Post[0].Type)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Category)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Post) {
+@foreach (var item in Model.Post.Where(p => p.Type == PostType.Selling)) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -35,7 +56,99 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.MinPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPrice)
+            </td>*@
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h3>Looking</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Condition)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Post[0].Price)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Post[0].Type)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Post.Where(p => p.Type == PostType.Looking)) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.MinPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPrice)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

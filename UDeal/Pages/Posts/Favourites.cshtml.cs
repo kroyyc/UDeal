@@ -11,28 +11,25 @@ using UDeal.Models;
 
 namespace UDeal.Pages.Posts
 {
-    public class IndexModel : PageModel
+    public class FavouritesModel : PageModel
     {
         private readonly UDeal.Data.ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
 
-        public IndexModel(UserManager<User> userManager, UDeal.Data.ApplicationDbContext context, SignInManager<User> signInManager)
+
+        public FavouritesModel(UserManager<User> userManager, UDeal.Data.ApplicationDbContext context)
         {
-            _userManager = userManager;
             _context = context;
-            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public IList<Post> Post { get;set; }
 
         public async Task OnGetAsync()
         {
-            if (_signInManager.IsSignedIn(User))
-            {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                Post = await _context.Posts.Where(p => p.UserId.Equals(user.Id)).Include(p => p.Category).ToListAsync();
-            }
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var favIds = _context.Favs.Where(f => f.UserId == user.Id).Select(f => f.PostId);
+            Post = await _context.Posts.Where(p => favIds.Contains(p.Id)).ToListAsync();
         }
     }
 }

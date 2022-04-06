@@ -2,19 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDeal.Data;
 
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220330003939_InitialSeedData")]
+    partial class InitialSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.15");
+                .HasAnnotation("ProductVersion", "5.0.12");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -258,25 +260,6 @@ namespace UDeal.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Favs");
-                });
-
-            modelBuilder.Entity("UDeal.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("UDeal.Models.Post", b =>
@@ -575,17 +558,6 @@ namespace UDeal.Data.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UDeal.Models.Image", b =>
-                {
-                    b.HasOne("UDeal.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("UDeal.Models.Post", b =>

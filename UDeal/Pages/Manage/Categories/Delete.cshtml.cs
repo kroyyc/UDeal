@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using UDeal.Data;
 using UDeal.Models;
 
-namespace UDeal.Pages.Posts
+namespace UDeal.Pages.Manage.Categories
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace UDeal.Pages.Posts
         }
 
         [BindProperty]
-        public Post Post { get; set; }
+        public Category Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,10 +29,9 @@ namespace UDeal.Pages.Posts
                 return NotFound();
             }
 
-            Post = await _context.Posts
-                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
+            Category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Post == null)
+            if (Category == null)
             {
                 return NotFound();
             }
@@ -46,11 +45,11 @@ namespace UDeal.Pages.Posts
                 return NotFound();
             }
 
-            Post = await _context.Posts.FindAsync(id);
+            Category = await _context.Categories.FindAsync(id);
 
-            if (Post != null)
+            if (Category != null)
             {
-                _context.Posts.Remove(Post);
+                _context.Categories.Remove(Category);
                 await _context.SaveChangesAsync();
             }
 

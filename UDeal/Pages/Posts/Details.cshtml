@@ -1,15 +1,22 @@
 ﻿@page
+@using UDeal.Models
 @model UDeal.Pages.Posts.DetailsModel
+
+@inject SignInManager<User> SignInManager
+
 
 @{
     ViewData["Title"] = "Details";
 }
 
+
 <h1>Details</h1>
+
 
 <div>
     <h4>Post</h4>
     <hr />
+    <img src="@ViewBag.ImagePath"/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Title)
@@ -24,13 +31,73 @@
             @Html.DisplayFor(model => model.Post.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.UserId)
+            @Html.DisplayNameFor(model => model.Post.Quantity)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.UserId)
+            @Html.DisplayFor(model => model.Post.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.Condition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.Condition)
+        </dd>
+
+        @if (Model.Post.Type == Models.PostType.Selling)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.Price)
+            </dt>
+            <dd class="col-sm-10">
+                $@Html.DisplayFor(model => model.Post.Price)
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.MinPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Post.MinPrice)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Post.MaxPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Post.MaxPrice)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.Category.Name)
         </dd>
     </dl>
 </div>
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (Model.IsFav)
+    {
+        <form method="post" asp-page-handler="remove" asp-route-id="@Model.Post.Id">
+            <input type="submit" value="Remove from Favourites" class="btn btn-primary" />
+        </form>
+    }
+    else
+    {
+        <form method="post" asp-page-handler="fav" asp-route-id="@Model.Post.Id">
+            <input type="submit" value="Add to Favourites" class="btn btn-primary" />
+        </form>
+    }    
+}
+
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>

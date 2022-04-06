@@ -7,19 +7,35 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+          New Post
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Create" asp-route-type="0">I am Selling</a>
+            <a class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Create" asp-route-type="1">I am Looking</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
           Manage
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a  class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Index">My Posts</a>
+            <a  class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Favourites">My Favourites</a>
+
+            <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Identity">My Account</a>
             @if (User.IsInRole("Admin"))
             {
-                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">Schools</a>
-                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">Campuses</a>
                 <div class="dropdown-divider"></div>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">All Schools</a>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">All Campuses</a>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Categories/Index" title="Manage">All Categories</a>
+
             }
-            <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Identity">Account</a>
+            
         </div>
-      </li>
+    </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
