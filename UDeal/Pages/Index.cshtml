@@ -23,7 +23,22 @@
             <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">@p.Title</h5>
-                <p class="card-text">$@p.Price</p>
+                @if (p.Type == PostType.Selling)
+                {
+                    if (p.Price != null)
+                    {
+                        <p class="card-text">$@p.Price</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">FREE</p>
+                    }
+                }
+                else if (p.MinPrice != null && p.MaxPrice != null)
+                {
+                    <p class="card-text">$@p.MinPrice - $p.MaxPrice</p>
+                }
+                
                 <a class="btn btn-primary" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
             </div>
         </div>
