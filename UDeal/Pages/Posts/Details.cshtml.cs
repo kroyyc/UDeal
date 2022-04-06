@@ -30,7 +30,7 @@ namespace UDeal.Pages.Posts
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
-            ViewData["ImagePath"] = "/images/" + (image.Name ?? "https://via.placeholder.com/300");
+            ViewData["ImagePath"] = image != null ? "/images/" + image.Name : "https://via.placeholder.com/300";
             
             if (id == null)
             {
