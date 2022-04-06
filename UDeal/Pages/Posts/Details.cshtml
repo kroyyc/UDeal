@@ -1,13 +1,12 @@
 ﻿@page
+@using UDeal.Models
 @model UDeal.Pages.Posts.DetailsModel
+
+@inject SignInManager<User> SignInManager
+
 
 @{
     ViewData["Title"] = "Details";
-
-    void AddToFavourites()
-    {
-        Console.WriteLine("Fav click");
-    }
 }
 
 
@@ -17,7 +16,7 @@
 <div>
     <h4>Post</h4>
     <hr />
-    <img src="https://via.placeholder.com/300"/>
+    <img src="@ViewBag.ImagePath"/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Title)
@@ -82,18 +81,22 @@
         </dd>
     </dl>
 </div>
-@if (Model.IsFav)
+@if (SignInManager.IsSignedIn(User))
 {
-    <form method="post" asp-page-handler="remove" asp-route-id="@Model.Post.Id">
-        <input type="submit" value="Remove from Favourites" class="btn btn-primary" />
-    </form>
+    @if (Model.IsFav)
+    {
+        <form method="post" asp-page-handler="remove" asp-route-id="@Model.Post.Id">
+            <input type="submit" value="Remove from Favourites" class="btn btn-primary" />
+        </form>
+    }
+    else
+    {
+        <form method="post" asp-page-handler="fav" asp-route-id="@Model.Post.Id">
+            <input type="submit" value="Add to Favourites" class="btn btn-primary" />
+        </form>
+    }    
 }
-else
-{
-    <form method="post" asp-page-handler="fav" asp-route-id="@Model.Post.Id">
-        <input type="submit" value="Add to Favourites" class="btn btn-primary" />
-    </form>
-}
+
 
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a> |

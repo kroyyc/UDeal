@@ -2,6 +2,7 @@
 @model UDeal.Pages.Posts.CreateModel
 @using UDeal.Models
 
+
 @{
     ViewData["Title"] = "Create Post";
 }
@@ -12,9 +13,15 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Post.Type" value="0" />
+            <input type="hidden" asp-for="Post.Type" value="@ViewBag.Type" />
+
+            <div class="form-group custom-file">
+                <label asp-for="Photo" class="custom-file-label"></label>
+                <input type="file" asp-for="Photo" name="Photo" class="custom-file-input form-control" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="Post.Title" class="control-label"></label>
                 <input asp-for="Post.Title" class="form-control" />
@@ -41,26 +48,29 @@
                 <label asp-for="Post.CategoryId" class="control-label">Category</label>
                 <select asp-for="Post.CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="Post.Price" class="control-label"></label>
-                <input asp-for="Post.Price" class="form-control" />
-                <span asp-validation-for="Post.Price" class="text-danger"></span>
-            </div>
-          
-   
-          
-            @*<div class="form-group">
-                <label asp-for="Post.MinPrice" class="control-label">Minimum Price</label>
-                <input asp-for="Post.MinPrice" class="form-control" />
-                <span asp-validation-for="Post.MinPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">xquery
 
-                <label asp-for="Post.MaxPrice" class="control-label">Maximum Price</label>
-                <input asp-for="Post.MaxPrice" class="form-control" />
-                <span asp-validation-for="Post.MaxPrice" class="text-danger"></span>
-            </div>*@
+            @if (ViewBag.Type == 0)
+            {
+                <div class="form-group">
+                    <label asp-for="Post.Price" class="control-label"></label>
+                    <input asp-for="Post.Price" class="form-control" />
+                    <span asp-validation-for="Post.Price" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Post.MinPrice" class="control-label">Minimum Price</label>
+                    <input asp-for="Post.MinPrice" class="form-control" />
+                    <span asp-validation-for="Post.MinPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+
+                    <label asp-for="Post.MaxPrice" class="control-label">Maximum Price</label>
+                    <input asp-for="Post.MaxPrice" class="form-control" />
+                    <span asp-validation-for="Post.MaxPrice" class="text-danger"></span>
+                </div>
+            }
             
             <input type="hidden" asp-for="Post.UserId" value="@ViewBag.UserId" />
             

@@ -24,10 +24,13 @@ namespace UDeal.Pages
 
         public List<Post> Posts { get; set; }
 
+        public List<Image> Images { get; set; }
+
         public void OnGet()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             Posts = _context.Posts.ToList();
+            Images = _context.Images.ToList();
         }
     }
 }

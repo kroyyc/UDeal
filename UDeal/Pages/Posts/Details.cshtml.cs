@@ -15,11 +15,13 @@ namespace UDeal.Pages.Posts
     {
         private readonly UDeal.Data.ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;    
 
-        public DetailsModel(UserManager<User> userManager, UDeal.Data.ApplicationDbContext context)
+        public DetailsModel(UserManager<User> userManager, UDeal.Data.ApplicationDbContext context, SignInManager<User> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public Post Post { get; set; }
@@ -27,6 +29,8 @@ namespace UDeal.Pages.Posts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
+            ViewData["ImagePath"] = "/images/" + (image.Name ?? "https://via.placeholder.com/300");
             
             if (id == null)
             {
@@ -36,8 +40,13 @@ namespace UDeal.Pages.Posts
             Post = await _context.Posts
                 .Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
 
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            IsFav = _context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any();
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                IsFav = _context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any();
+            }
+         
 
             if (Post == null)
             {
