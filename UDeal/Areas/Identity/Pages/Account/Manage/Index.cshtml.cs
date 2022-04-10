@@ -41,6 +41,11 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [EmailAddress]
+            [Display(Name = "Alternate Email")]
+            public string AlternateEmail { get; set; }
+            public string Address { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -60,8 +65,16 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                
             };
+
+            var contactInfo = _context.Contacts.Where(c => c.UserId == user.Id).FirstOrDefault();
+            if (contactInfo != null)
+            {
+                Input.Address = contactInfo.Address;
+                Input.AlternateEmail = contactInfo.AlternateEmail;
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -89,6 +102,28 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            var contact = _context.Contacts.Where(c => c.UserId == user.Id).FirstOrDefault();
+            if (contact != null)
+            {
+                contact.PhoneNumber = Input.PhoneNumber;
+                contact.AlternateEmail = Input.AlternateEmail;
+                contact.Address = Input.Address;
+                
+            }
+            else
+            {
+                contact = new Contact
+                {
+                    AlternateEmail = Input.AlternateEmail,
+                    Address = Input.Address,
+                    PhoneNumber = Input.PhoneNumber,
+                    User = user,
+                    UserId = user.Id
+                }; 
+                _context.Contacts.Add(contact);
+            }
+            await _context.SaveChangesAsync();
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

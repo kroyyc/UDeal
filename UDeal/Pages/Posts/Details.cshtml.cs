@@ -26,11 +26,12 @@ namespace UDeal.Pages.Posts
 
         public Post Post { get; set; }
         public bool IsFav { get; set; }
+        public Contact PosterContact { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
-            ViewData["ImagePath"] = "/images/" + (image.Name ?? "https://via.placeholder.com/300");
+            ViewData["ImagePath"] = image != null ? "/images/" + image.Name : "https://via.placeholder.com/300";
             
             if (id == null)
             {
@@ -40,6 +41,15 @@ namespace UDeal.Pages.Posts
             Post = await _context.Posts
                 .Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
 
+            PosterContact = await _context.Contacts.Where(c => c.UserId == Post.UserId).FirstOrDefaultAsync();
+
+            if (PosterContact == null)
+            {
+                PosterContact = new Contact
+                {
+                    AlternateEmail = User.Identity.Name
+                };
+            }
 
             if (_signInManager.IsSignedIn(User))
             {

@@ -79,6 +79,31 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Post.Category.Name)
         </dd>
+
+        
+        <hr />
+        <h5>Poster's Contact Information</h5>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="@("mailto:" + Model.PosterContact.AlternateEmail)">@Html.DisplayFor(model => model.PosterContact.AlternateEmail)</a>
+        </dd>
+        <dt class="col-sm-2">
+            Phone Number
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="@("tel:" + Model.PosterContact.PhoneNumber)">@Html.DisplayFor(model => model.PosterContact.PhoneNumber)</a>
+        </dd>
+        <dt class="col-sm-2">
+            Address
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="@("https://maps.google.com/?q=" + Model.PosterContact.Address)">@Html.DisplayFor(model => model.PosterContact.Address)</a>
+        </dd>
+        
+        
+
     </dl>
 </div>
 @if (SignInManager.IsSignedIn(User))
