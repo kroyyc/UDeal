@@ -30,13 +30,22 @@ namespace UDeal.Pages
         [BindProperty(SupportsGet = true)]
         public string Search { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int Category { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int School { get; set; }
+
         public async Task OnGetAsync()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            Images = _context.Images.ToList();
-            Posts = _context.Posts.ToList();
+            ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
 
-            var posts = from p in _context.Posts select p;
+            Images = _context.Images.ToList();
+
+            var posts = from p in _context.Posts
+                        join user in _context.Users on p.UserId equals user.Id
+                        select p;
 
             if (!string.IsNullOrEmpty(Search))
             {
@@ -44,7 +53,17 @@ namespace UDeal.Pages
                 posts = posts.Where(p => p.Title.ToLower().Contains(lowerSearch) || p.Description.ToLower().Contains(lowerSearch));
             }
 
-            Posts = await posts.ToListAsync();
+            if (Category > 0)
+            {
+                posts = posts.Where(p => p.CategoryId == Category);
+            }
+
+            if (School > 0)
+            {
+                posts = posts.Where(p => p.User.SchoolId == School);
+            }
+
+            Posts = await posts.Include(p => p.User).ToListAsync();
         }
     }
 }

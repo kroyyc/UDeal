@@ -10,18 +10,23 @@
     @if (!string.IsNullOrEmpty(Model.Search)) {
         <h3>Search results for: '@Model.Search'</h3>
     }
-    <div class="row input-group">
-        <div class="col form-group">
-                <label>Category</label>
-                <select class="form-control" asp-items="ViewBag.CategoryId">
-                    <option selected>All Categories</option>
-                </select>
-            </div>
-            <div class="col form-group">
-                <label>Filter By</label>
-                <select class="form-control"></select>
-            </div>
-    </div>
+        
+    <form class="row input-group flex-fill" id="filterForm">
+        <input name="search" type="hidden" value="@Model.Search"/>
+        <div class="col-md-6 form-group">
+            <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
+                <option value="" selected>All Categories</option>
+            </select>
+        </div>
+        <div class="col-md-6 form-group">
+            <select name="school" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
+                <option value="" selected>All Schools</option>
+            </select>
+        </div>
+    </form>
+
+    <hr/>
+
     @foreach (Post p in Model.Posts)
     {
         <div class="card" style="width: 18rem; margin: 10px;">
