@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,24 @@ namespace UDeal.Pages
 
         public List<Image> Images { get; set; }
 
-        public void OnGet()
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
+
+        public async Task OnGetAsync()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            Posts = _context.Posts.ToList();
             Images = _context.Images.ToList();
+            Posts = _context.Posts.ToList();
+
+            var posts = from p in _context.Posts select p;
+
+            if (!string.IsNullOrEmpty(Search))
+            {
+                var lowerSearch = Search.ToLower();
+                posts = posts.Where(p => p.Title.ToLower().Contains(lowerSearch) || p.Description.ToLower().Contains(lowerSearch));
+            }
+
+            Posts = await posts.ToListAsync();
         }
     }
 }

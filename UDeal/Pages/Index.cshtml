@@ -7,10 +7,15 @@
 
 
 <div class="d-flex flex-wrap">
+    @if (!string.IsNullOrEmpty(Model.Search)) {
+        <h3>Search results for: '@Model.Search'</h3>
+    }
     <div class="row input-group">
         <div class="col form-group">
                 <label>Category</label>
-                <select class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select class="form-control" asp-items="ViewBag.CategoryId">
+                    <option selected>All Categories</option>
+                </select>
             </div>
             <div class="col form-group">
                 <label>Filter By</label>
