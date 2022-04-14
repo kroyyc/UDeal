@@ -86,6 +86,7 @@ namespace UDeal.Controllers
             post.MinPrice = postDTO.MinPrice;
             post.Type = postDTO.Type;
             post.Course = _context.Courses.Find(postDTO.CourseId);
+            post.Campus = _context.Campuses.Find(postDTO.CampusId);
           
             try
             {
@@ -124,6 +125,7 @@ namespace UDeal.Controllers
                 UserId = postDTO.UserId,
                 Type = postDTO.Type,
                 Course = _context.Courses.Find(postDTO.CourseId),
+                Campus = _context.Campuses.Find(postDTO.CampusId),
             };
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
@@ -167,6 +169,7 @@ namespace UDeal.Controllers
                 MinPrice = post.MinPrice,
                 Type = post.Type,
                 CourseId = post.CourseId,
+                CampusId = post.CampusId,
             };
     }
 }
