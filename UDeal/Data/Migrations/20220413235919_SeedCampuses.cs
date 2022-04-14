@@ -24,7 +24,7 @@ namespace UDeal.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Campuses",
                 columns: new[] { "Id", "City", "Name", "SchoolId" },
-                values: new object[] { 4, "Doha", "Quatar", 1 });
+                values: new object[] { 4, "Doha", "Qatar", 1 });
 
             migrationBuilder.InsertData(
                 table: "Campuses",

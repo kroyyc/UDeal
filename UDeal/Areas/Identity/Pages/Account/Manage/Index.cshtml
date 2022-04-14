@@ -19,6 +19,12 @@
                 <label asp-for="SchoolName">School</label>
                 <input asp-for="SchoolName" class="form-control" disabled />
             </div>
+            <div class="form-group">
+                <label asp-for="Input.CampusId">Preffered Campus</label>
+                <select class="form-control" asp-items="ViewBag.SchoolCampuses" asp-for="Input.CampusId">
+                    <option selected disabled value="@null">N/A</option>
+                </select>
+            </div>
             <hr/>
             <h5>Contact Information</h5>
             <p>These fields will be visible on your posts if set. To hide a field, just leave it blank.</p>

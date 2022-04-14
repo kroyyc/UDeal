@@ -41,7 +41,7 @@ namespace UDeal.Pages
 
         public async Task OnGetAsync()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "Id", "Name");
             ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
             ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == School), "Id", "Name");
 
