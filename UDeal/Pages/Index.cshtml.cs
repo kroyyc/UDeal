@@ -49,7 +49,11 @@ namespace UDeal.Pages
         public async Task OnGetAsync()
         {
             // Get the current user
-            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            User currentUser = null;
+            if (User.Identity.Name != null)
+            {
+                currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
 
             ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "Id", "Name");
             ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
@@ -77,7 +81,7 @@ namespace UDeal.Pages
                 posts = posts.Where(p => p.User.SchoolId == School);
             }
 
-            if (Campus == null && currentUser.CampusId != null)
+            if (Campus == null && currentUser != null)
             {
                 // no campus specified so lets try and use the user's preffered one
                 Campus = currentUser.CampusId;
