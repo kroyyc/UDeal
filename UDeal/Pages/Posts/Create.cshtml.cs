@@ -33,6 +33,7 @@ namespace UDeal.Pages.Posts
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             ViewData["UserId"] = user.Id;
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == user.SchoolId), "Id", "Name");
             return Page();
         }
 
