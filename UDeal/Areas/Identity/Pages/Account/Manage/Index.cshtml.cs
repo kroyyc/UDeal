@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using UDeal.Data;
 using UDeal.Models;
 
@@ -46,6 +47,7 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Alternate Email")]
             public string AlternateEmail { get; set; }
             public string Address { get; set; }
+            public int CampusId { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -65,8 +67,7 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber,
-                
+                PhoneNumber = phoneNumber,   
             };
 
             var contactInfo = _context.Contacts.Where(c => c.UserId == user.Id).FirstOrDefault();
@@ -75,11 +76,18 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
                 Input.Address = contactInfo.Address;
                 Input.AlternateEmail = contactInfo.AlternateEmail;
             }
+
+            if (user.CampusId != null)
+            {
+                Input.CampusId = (int)user.CampusId;
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == user.SchoolId).ToList(), "Id", "Name");
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -109,7 +117,6 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
                 contact.PhoneNumber = Input.PhoneNumber;
                 contact.AlternateEmail = Input.AlternateEmail;
                 contact.Address = Input.Address;
-                
             }
             else
             {
@@ -124,6 +131,12 @@ namespace UDeal.Areas.Identity.Pages.Account.Manage
                 _context.Contacts.Add(contact);
             }
             await _context.SaveChangesAsync();
+
+            if (Input.CampusId != user.CampusId)
+            {
+                user.CampusId = Input.CampusId;
+                await _userManager.UpdateAsync(user);
+            }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

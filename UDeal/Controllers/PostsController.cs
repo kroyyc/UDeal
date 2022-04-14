@@ -21,6 +21,22 @@ namespace UDeal.Controllers
             _context = context;
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> Search(string title)
+        {
+
+            IQueryable<Post> posts = _context.Posts;
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                posts = posts.Where(x => x.Title.Contains(title));
+            }
+
+            return await posts
+                .Select(p => ItemToDTO(p))
+                .ToListAsync();
+        }
+
         // GET: api/Posts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPosts()
