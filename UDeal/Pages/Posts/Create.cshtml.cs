@@ -34,6 +34,7 @@ namespace UDeal.Pages.Posts
             ViewData["UserId"] = user.Id;
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == user.SchoolId), "Id", "Name");
+            ViewData["SchoolCourses"] = _context.Courses.Where(c => c.SchoolId == user.SchoolId).ToList();
             return Page();
         }
 
@@ -41,6 +42,8 @@ namespace UDeal.Pages.Posts
         public Post Post { get; set; }
         [BindProperty]
         public IFormFile Photo { get; set; }
+        [BindProperty]
+        public string CourseName { get; set; }
       
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -49,7 +52,32 @@ namespace UDeal.Pages.Posts
             {
                 return Page();
             }
-          
+
+            if (!string.IsNullOrEmpty(CourseName))
+            {
+                CourseName = CourseName.ToUpper().Trim();
+                Course course = _context.Courses.Where(c => c.Name == CourseName).FirstOrDefault();
+                // Check if this course already exists
+                if (course != null)
+                {
+                    Post.Course = course;
+                    Post.CourseId = course.Id;
+                }
+                else
+                {
+                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                    // else add the course to the database
+                    course = new Course
+                    {
+                        Name = CourseName,
+                        SchoolId = (int)user.SchoolId,
+                        School = user.School
+                    };
+                    _context.Courses.Add(course);
+                    Post.Course = course;
+                }
+            }
+
             _context.Posts.Add(Post);
             await _context.SaveChangesAsync();
 

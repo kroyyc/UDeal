@@ -8,26 +8,25 @@
 
 <h1>My Posts</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-
 <h3>Selling</h3>
+<p>
+    <a asp-page="Create" asp-route-type="0">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Title)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.Post[0].Description)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.Post[0].Quantity)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.Post[0].Condition)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Price)
             </th>
@@ -43,6 +42,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Category)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Course)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -52,15 +54,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
+            </td>*@
+           @* <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
+            </td>*@
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Condition)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
@@ -77,6 +79,9 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Course.Name)
+            </td>
+            <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
@@ -87,15 +92,18 @@
 </table>
 
 <h3>Looking</h3>
+<p>
+    <a asp-page="Create" asp-route-type="1">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Title)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.Post[0].Description)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Quantity)
             </th>
@@ -117,7 +125,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Category)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Course)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -126,9 +136,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
@@ -149,6 +159,9 @@
             </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

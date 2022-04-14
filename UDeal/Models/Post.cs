@@ -21,6 +21,9 @@ namespace UDeal.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public Course Course { get; set; }
+        public int? CourseId { get; set; }
     }
 
     public class PostDTO
@@ -36,6 +39,8 @@ namespace UDeal.Models
         public PostType Type { get; set; }
         public string UserId { get; set; }
         public int CategoryId { get; set; }
+        public int? CourseId { get; set; }
+
     }
 
     public enum PostType

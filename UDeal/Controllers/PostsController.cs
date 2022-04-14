@@ -85,6 +85,7 @@ namespace UDeal.Controllers
             post.MaxPrice = postDTO.MaxPrice;
             post.MinPrice = postDTO.MinPrice;
             post.Type = postDTO.Type;
+            post.Course = _context.Courses.Find(postDTO.CourseId);
           
             try
             {
@@ -121,7 +122,8 @@ namespace UDeal.Controllers
                 MaxPrice = postDTO.MaxPrice,
                 MinPrice = postDTO.MinPrice,
                 UserId = postDTO.UserId,
-                Type = postDTO.Type
+                Type = postDTO.Type,
+                Course = _context.Courses.Find(postDTO.CourseId),
             };
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
@@ -164,6 +166,7 @@ namespace UDeal.Controllers
                 MaxPrice = post.MaxPrice,
                 MinPrice = post.MinPrice,
                 Type = post.Type,
+                CourseId = post.CourseId,
             };
     }
 }
