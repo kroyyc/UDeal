@@ -30,7 +30,9 @@ namespace UDeal.Pages.Posts
             }
 
             Post = await _context.Posts
-                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.User)
+                .Include(p => p.Campus)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Post == null)
             {
