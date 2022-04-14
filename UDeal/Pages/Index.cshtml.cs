@@ -89,17 +89,18 @@ namespace UDeal.Pages
             {
                 posts = posts.Where(p => p.CourseId.Equals(Course));
             }
-
-            if (Campus == null && currentUser != null)
-            {
-                // no campus specified so lets try and use the user's preffered one
-                Campus = currentUser.CampusId;
-            }
             
             if (Campus > 0)
             {
                 // Here we need to filter posts based on their campusId, when the relation is added
+                posts = posts.Where(p => p.CampusId.Equals(Campus));
             }
+            //else if (Campus == null && currentUser != null && !currentUser.CampusId.Equals(null) && School.Equals(currentUser.SchoolId))
+            //{
+            //    Campus defaultCampus= (int) currentUser.CampusId;
+            //    Campus filterCampus;
+            //    posts = posts.Where(p => p.CampusId.Equals(currentUser.CampusId));
+            //}
             
 
             Posts = await posts.Include(p => p.User).ToListAsync();

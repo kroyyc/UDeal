@@ -29,12 +29,17 @@ namespace UDeal.Pages.Posts
 
         public async Task<IActionResult> OnGetAsync(int type)
         {
-            ViewData["Type"] = type;
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ViewData["Type"] = type;
             ViewData["UserId"] = user.Id;
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == user.SchoolId), "Id", "Name");
             ViewData["SchoolCourses"] = _context.Courses.Where(c => c.SchoolId == user.SchoolId).ToList();
+            if (user.CampusId != null)
+            {
+                Post = new Post { CampusId = (int)user.CampusId };
+            }
+            
             return Page();
         }
 
