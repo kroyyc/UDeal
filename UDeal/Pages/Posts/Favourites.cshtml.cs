@@ -34,5 +34,18 @@ namespace UDeal.Pages.Posts
                 .Include(p => p.Course)
                 .ToListAsync();
         }
+
+
+        public async Task<IActionResult> OnPostRemove(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            _context.Favs.Remove(new Favourite
+            {
+                PostId = id,
+                UserId = user.Id
+            });
+            await _context.SaveChangesAsync();
+            return Redirect("/Posts/Favourites");
+        }
     }
 }
