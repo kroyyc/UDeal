@@ -32,9 +32,9 @@ namespace UDeal.Controllers
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CourseDTO>> GetCourse(int id, int Schoolid)
+        public async Task<ActionResult<CourseDTO>> GetCourse(int id)
         {
-            var course = await _context.Courses.FindAsync(id, Schoolid);
+            var course = await _context.Courses.FindAsync(id);
 
             if (course == null)
             {
@@ -47,9 +47,9 @@ namespace UDeal.Controllers
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, int Schoolid, CourseDTO courseDTO)
+        public async Task<IActionResult> PutCourse(int id, CourseDTO courseDTO)
         {
-            if (id != courseDTO.Id || Schoolid != courseDTO.SchoolId)
+            if (id != courseDTO.Id)
             {
                 return BadRequest();
             }
@@ -96,14 +96,14 @@ namespace UDeal.Controllers
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCourse), new { id = course.Id },ItemToDTO(course));
+            return CreatedAtAction(nameof(GetCourse), new { id = course.Id }, ItemToDTO(course));
         }
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(int id, int Schoolid)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
-            var course = await _context.Courses.FindAsync(id, Schoolid);
+            var course = await _context.Courses.FindAsync(id);
             if (course == null)
             {
                 return NotFound();
