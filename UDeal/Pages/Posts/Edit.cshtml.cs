@@ -34,6 +34,7 @@ namespace UDeal.Pages.Posts
             ViewData["UserId"] = user.Id;
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SchoolCourses"] = _context.Courses.Where(c => c.SchoolId == user.SchoolId).ToList();
+            ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == user.SchoolId), "Id", "Name");
 
             if (id == null)
             {

@@ -35,6 +35,7 @@ namespace UDeal.Pages.Posts
                     .Where(p => p.UserId.Equals(user.Id))
                     .Include(p => p.Category)
                     .Include(c => c.Course)
+                    .Include(c => c.Campus)
                     .ToListAsync();
             }
         }

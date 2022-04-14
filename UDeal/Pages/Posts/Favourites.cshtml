@@ -36,6 +36,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].Course)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Campus)
+            </th>
             @*<th>
                 @Html.DisplayNameFor(model => model.Post[0].User)
             </th>*@
@@ -71,6 +74,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Course.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Campus.Name)
             </td>
            @* <td>
                 @Html.DisplayFor(modelItem => item.User.Id)

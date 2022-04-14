@@ -32,6 +32,7 @@ namespace UDeal.Pages.Posts
             Post = await _context.Posts
                 .Where(p => favIds.Contains(p.Id))
                 .Include(p => p.Course)
+                .Include(p => p.Campus)
                 .ToListAsync();
         }
 
