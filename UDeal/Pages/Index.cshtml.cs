@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,31 +17,40 @@ namespace UDeal.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private ApplicationDbContext _context;
+        private UserManager<User> _userManager;
 
-        public IndexModel(ApplicationDbContext context, ILogger<IndexModel> logger)
+
+        public IndexModel(ApplicationDbContext context, ILogger<IndexModel> logger, UserManager<User> userManager)
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
         public List<Post> Posts { get; set; }
-
         public List<Image> Images { get; set; }
+    
+        // Start of query parameters
 
         [BindProperty(SupportsGet = true)]
         public string Search { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int Category { get; set; }
+        public int? Category { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int School { get; set; }
+        public int? School { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int Campus { get; set; }
+        public int? Campus { get; set; }
+
+        // End of query parameters
 
         public async Task OnGetAsync()
         {
+            // Get the current user
+            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
             ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "Id", "Name");
             ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
             ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == School), "Id", "Name");
@@ -66,6 +76,18 @@ namespace UDeal.Pages
             {
                 posts = posts.Where(p => p.User.SchoolId == School);
             }
+
+            if (Campus == null && currentUser.CampusId != null)
+            {
+                // no campus specified so lets try and use the user's preffered one
+                Campus = currentUser.CampusId;
+            }
+            
+            if (Campus > 0)
+            {
+                // Here we need to filter posts based on their campusId, when the relation is added
+            }
+            
 
             Posts = await posts.Include(p => p.User).ToListAsync();
         }

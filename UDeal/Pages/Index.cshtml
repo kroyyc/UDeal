@@ -50,7 +50,9 @@
 
     @if (!Model.Posts.Any())
     {
-        <h5 style="margin-top: 5%">No results. Please alter your search parameters.</h5>
+        <div class="container-fluid m-5" style="text-align: center">
+            <h5>No results. Please alter your search parameters.</h5>
+        </div>
     }
     else
     {
