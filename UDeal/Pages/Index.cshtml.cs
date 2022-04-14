@@ -36,10 +36,14 @@ namespace UDeal.Pages
         [BindProperty(SupportsGet = true)]
         public int School { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int Campus { get; set; }
+
         public async Task OnGetAsync()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
+            ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == School), "Id", "Name");
 
             Images = _context.Images.ToList();
 

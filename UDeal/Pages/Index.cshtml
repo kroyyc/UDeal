@@ -11,46 +11,74 @@
         <h3>Search results for: '@Model.Search'</h3>
     }
         
-    <form class="row input-group flex-fill" id="filterForm">
+    <form class="container-fluid" id="filterForm">
+
+        <div class="row input-group flex-fill m-2">
+            <div class="col-md-6 form-group">
+                <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
+                    <option value="" selected>All Categories</option>
+                </select>
+            </div>
+            <div class="col-md-6 form-group">
+                <select name="school" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
+                    <option value="" selected>All Schools</option>
+                </select>
+            </div>
+        </div>
+
+        @if (@Model.School > 0)
+        {
+            <div class="row input-group flex-fill m-2">
+                <div class="col-md-6 form-group">
+                    <select name="campus" class="form-control" asp-items="ViewBag.SchoolCampuses" asp-for="@Model.Campus" onchange="filterForm.submit()">
+                        <option value="" selected>All Campuses</option>
+                    </select>
+                </div>
+                <div class="col-md-6 form-group">
+                    @*<select name="course" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
+                        <option value="" selected>Affiliated Course</option>
+                    </select>*@
+                </div>
+            </div>   
+        }
+
         <input name="search" type="hidden" value="@Model.Search"/>
-        <div class="col-md-6 form-group">
-            <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
-                <option value="" selected>All Categories</option>
-            </select>
-        </div>
-        <div class="col-md-6 form-group">
-            <select name="school" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
-                <option value="" selected>All Schools</option>
-            </select>
-        </div>
+        
     </form>
 
     <hr/>
 
-    @foreach (Post p in Model.Posts)
+    @if (!Model.Posts.Any())
     {
-        <div class="card" style="width: 18rem; margin: 10px;">
-            <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">@p.Title</h5>
-                @if (p.Type == PostType.Selling)
-                {
-                    if (p.Price != null)
+        <h5 style="margin-top: 5%">No results. Please alter your search parameters.</h5>
+    }
+    else
+    {
+        @foreach (Post p in Model.Posts)
+        {
+            <div class="card" style="width: 18rem; margin: 10px;">
+                <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@p.Title</h5>
+                    @if (p.Type == PostType.Selling)
                     {
-                        <p class="card-text">$@p.Price</p>
+                        if (p.Price != null)
+                        {
+                            <p class="card-text">$@p.Price</p>
+                        }
+                        else
+                        {
+                            <p class="card-text">FREE</p>
+                        }
                     }
-                    else
+                    else if (p.MinPrice != null && p.MaxPrice != null)
                     {
-                        <p class="card-text">FREE</p>
+                        <p class="card-text">$@p.MinPrice - $p.MaxPrice</p>
                     }
-                }
-                else if (p.MinPrice != null && p.MaxPrice != null)
-                {
-                    <p class="card-text">$@p.MinPrice - $p.MaxPrice</p>
-                }
                 
-                <a class="btn btn-primary" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
+                    <a class="btn btn-primary" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
+                </div>
             </div>
-        </div>
+        }   
     }
 </div>
