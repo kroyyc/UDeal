@@ -50,6 +50,22 @@
                     <option disabled selected value="-1">None</option>
                 </select>
                 <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+
+        
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseName" class="control-label">Course</label>
+                <input asp-for="CourseName" class="form-control" type="search" list="school-courses" />
+                <span asp-validation-for="Post.CourseId" class="text-danger"></span>
+                @if (ViewBag.SchoolCourse != null)
+                {
+                     <datalist id="school-courses">
+                        @foreach(Course c in ViewBag.SchoolCourses)
+                        {
+                            <option value="@c.Name"></option>
+                        }
+                    </datalist>
+                }
             </div>
 
             @if (ViewBag.Type == 0)

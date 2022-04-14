@@ -29,7 +29,10 @@ namespace UDeal.Pages.Posts
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var favIds = _context.Favs.Where(f => f.UserId == user.Id).Select(f => f.PostId);
-            Post = await _context.Posts.Where(p => favIds.Contains(p.Id)).ToListAsync();
+            Post = await _context.Posts
+                .Where(p => favIds.Contains(p.Id))
+                .Include(p => p.Course)
+                .ToListAsync();
         }
     }
 }

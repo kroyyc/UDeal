@@ -31,7 +31,11 @@ namespace UDeal.Pages.Posts
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                Post = await _context.Posts.Where(p => p.UserId.Equals(user.Id)).Include(p => p.Category).ToListAsync();
+                Post = await _context.Posts
+                    .Where(p => p.UserId.Equals(user.Id))
+                    .Include(p => p.Category)
+                    .Include(c => c.Course)
+                    .ToListAsync();
             }
         }
     }

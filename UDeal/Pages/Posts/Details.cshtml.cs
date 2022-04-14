@@ -39,7 +39,9 @@ namespace UDeal.Pages.Posts
             }
 
             Post = await _context.Posts
-                .Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Category)
+                .Include(p => p.Course)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             PosterContact = await _context.Contacts.Where(c => c.UserId == Post.UserId).FirstOrDefaultAsync();
 

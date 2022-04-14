@@ -25,13 +25,15 @@ namespace UDeal.Pages.Posts
 
         [BindProperty]
         public Post Post { get; set; }
+        [BindProperty]
+        public string CourseName { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             ViewData["UserId"] = user.Id;
-
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["SchoolCourses"] = _context.Courses.Where(c => c.SchoolId == user.SchoolId).ToList();
 
             if (id == null)
             {
@@ -39,12 +41,20 @@ namespace UDeal.Pages.Posts
             }
 
             Post = await _context.Posts
-                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.User)
+                .Include(p => p.Course)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Post == null)
             {
                 return NotFound();
             }
+
+            if (Post.Course != null)
+            {
+                CourseName = Post.Course.Name;
+            }
+
             return Page();
         }
 
@@ -55,6 +65,33 @@ namespace UDeal.Pages.Posts
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            if(!string.IsNullOrEmpty(CourseName)) 
+            {
+                CourseName = CourseName.ToUpper().Trim();       // normalize
+                if (Post.Course == null || CourseName != Post.Course.Name)
+                {
+                    // user changed the course input field, so check if exists...
+                    Course course = _context.Courses.Where(c => c.Name == CourseName).FirstOrDefault();
+                    if (course != null)
+                    {
+                        Post.Course = course;
+                        Post.CourseId = course.Id;
+                    }
+                    else
+                    {
+                        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                        // else add the course to the database
+                        course = new Course
+                        {
+                            Name = CourseName,
+                            SchoolId = (int)user.SchoolId,
+                        };
+                        _context.Courses.Add(course);
+                        Post.Course = course;
+                    }
+                }
             }
 
             _context.Attach(Post).State = EntityState.Modified;
