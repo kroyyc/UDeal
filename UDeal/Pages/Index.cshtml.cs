@@ -44,6 +44,9 @@ namespace UDeal.Pages
         [BindProperty(SupportsGet = true)]
         public int? Campus { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int? Course { get; set; }
+
         // End of query parameters
 
         public async Task OnGetAsync()
@@ -58,6 +61,7 @@ namespace UDeal.Pages
             ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "Id", "Name");
             ViewData["Schools"] = new SelectList(_context.Schools, "Id", "Name");
             ViewData["SchoolCampuses"] = new SelectList(_context.Campuses.Where(c => c.SchoolId == School), "Id", "Name");
+            ViewData["SchoolCourses"] = new SelectList(_context.Courses.Where(c => c.SchoolId == School), "Id", "Name");
 
             Images = _context.Images.ToList();
 
@@ -73,12 +77,17 @@ namespace UDeal.Pages
 
             if (Category > 0)
             {
-                posts = posts.Where(p => p.CategoryId == Category);
+                posts = posts.Where(p => p.CategoryId.Equals(Category));
             }
 
             if (School > 0)
             {
-                posts = posts.Where(p => p.User.SchoolId == School);
+                posts = posts.Where(p => p.User.SchoolId.Equals(School));
+            }
+
+            if (Course > 0)
+            {
+                posts = posts.Where(p => p.CourseId.Equals(Course));
             }
 
             if (Campus == null && currentUser != null)
