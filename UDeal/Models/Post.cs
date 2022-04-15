@@ -28,7 +28,6 @@ namespace UDeal.Models
 
         public Campus Campus { get; set; }
         public int CampusId { get; set; }    
-
         public DateTime Created { get; set; }
     }
 

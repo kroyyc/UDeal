@@ -48,7 +48,10 @@ namespace UDeal.Pages
         public int? Course { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string Sort { get; set; }
+        public string? Sort { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public PostType? Type { get; set; }
 
         // End of query parameters
 
@@ -76,6 +79,11 @@ namespace UDeal.Pages
             {
                 var lowerSearch = Search.ToLower();
                 posts = posts.Where(p => p.Title.ToLower().Contains(lowerSearch) || p.Description.ToLower().Contains(lowerSearch));
+            }
+
+            if (Type != null)
+            {
+                posts = posts.Where(p => p.Type == Type);
             }
 
             if (Category > 0)

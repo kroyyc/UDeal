@@ -23,6 +23,11 @@
                     </select>
                 </div>
                 <div class="row form-group m-2 flex-fill">
+                    <select name="type" class="form-control" asp-items="Html.GetEnumSelectList<PostType>()" asp-for="@Model.Type" onchange="filterForm.submit()">
+                        <option value="@null" selected>All Types</option>
+                    </select>
+                </div>
+                <div class="row form-group m-2 flex-fill">
                     <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
                         <option value="" selected>All Categories</option>
                     </select>
@@ -71,7 +76,7 @@
                 {
                     @foreach (Post p in Model.Posts)
                     {
-                        <div class="card" style="width: 18rem; margin: 10px;">
+                        <div class="card" style="width: 30%; margin: 10px;">
                             <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">@p.Title</h5>
