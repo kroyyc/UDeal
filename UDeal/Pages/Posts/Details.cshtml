@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using UDeal.Models
 @model UDeal.Pages.Posts.DetailsModel
 
@@ -16,7 +16,10 @@
 <div>
     <h4>Post</h4>
     <hr />
+    <dl class=" col"></dl>
+   </div>
     <img src="@ViewBag.ImagePath"/>
+  <div>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Title)
