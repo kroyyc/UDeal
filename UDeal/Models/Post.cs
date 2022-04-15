@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace UDeal.Models
 {
@@ -26,8 +27,8 @@ namespace UDeal.Models
         public int? CourseId { get; set; }
 
         public Campus Campus { get; set; }
-
-        public int CampusId { get; set; }  
+        public int CampusId { get; set; }    
+        public DateTime Created { get; set; }
     }
 
     public class PostDTO
@@ -44,8 +45,8 @@ namespace UDeal.Models
         public string UserId { get; set; }
         public int CategoryId { get; set; }
         public int? CourseId { get; set; }
-
         public int CampusId { get; set; }
+        public DateTime Created { get; set; }
 
     }
 

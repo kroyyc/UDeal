@@ -5,82 +5,106 @@
     ViewData["Title"] = "Home page";
 }
 
+<div class="container-fluid">
 
-<div class="d-flex flex-wrap">
-    @if (!string.IsNullOrEmpty(Model.Search)) {
-        <h3>Search results for: '@Model.Search'</h3>
-    }
-        
-    <form class="container-fluid" id="filterForm">
+    <div class="row">
 
-        <div class="row input-group flex-fill m-2">
-            <div class="col-md-6 form-group">
-                <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
-                    <option value="" selected>All Categories</option>
-                </select>
-            </div>
-            <div class="col-md-6 form-group">
-                <select name="school" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
-                    <option value="" selected>All Schools</option>
-                </select>
-            </div>
-        </div>
-
-        @if (@Model.School > 0)
-        {
-            <div class="row input-group flex-fill m-2">
-                <div class="col-md-6 form-group">
-                    <select name="campus" class="form-control" asp-items="ViewBag.SchoolCampuses" asp-for="@Model.Campus" onchange="filterForm.submit()">
-                        <option value="" selected>All Campuses</option>
+        <div class="col-md-3">
+            <form id="filterForm">
+                <div class="row form-group m-2 flex-fill">
+                    <label asp-for="@Model.Sort">Sort by</label>
+                    <select name="sort" class="form-control" asp-for="@Model.Sort" onchange="filterForm.submit()">
+                        <option value="date_desc" selected>Created: newest to oldest</option>
+                        <option value="date_asc">Created: oldest to newest</option>
+                        <option value="price_desc">Price: highest to lowest</option>
+                        <option value="price_asc">Price: lowest to highest</option>
+                        <option value="title_asc">Title: a - z</option>
+                        <option value="title_desc">Title: z - a</option>
                     </select>
                 </div>
-                <div class="col-md-6 form-group">
-                    <select name="course" class="form-control" asp-items="ViewBag.SchoolCourses" asp-for="@Model.Course" onchange="filterForm.submit()">
-                        <option value="" selected>Affiliated Course</option>
+                <div class="row form-group m-2 flex-fill">
+                    <select name="type" class="form-control" asp-items="Html.GetEnumSelectList<PostType>()" asp-for="@Model.Type" onchange="filterForm.submit()">
+                        <option value="@null" selected>All Types</option>
                     </select>
                 </div>
-            </div>   
-        }
+                <div class="row form-group m-2 flex-fill">
+                    <select name="category" class="form-control" asp-items="ViewBag.CategoryId" asp-for="@Model.Category" onchange="filterForm.submit()">
+                        <option value="" selected>All Categories</option>
+                    </select>
+                </div>
+                <div class="row form-group m-2 flex-fill">
+                    <select name="school" class="form-control" asp-items="ViewBag.Schools" asp-for="@Model.School" onchange="filterForm.submit()">
+                        <option value="" selected>All Schools</option>
+                    </select>
+                </div>
 
-        <input name="search" type="hidden" value="@Model.Search"/>
-        
-    </form>
+                @if (@Model.School > 0)
+                {
+                    <div class="row form-group m-2 flex-fill">
+                        <select name="campus" class="form-control" asp-items="ViewBag.SchoolCampuses" asp-for="@Model.Campus" onchange="filterForm.submit()">
+                            <option value="" selected>All Campuses</option>
+                        </select>
+                    </div>
+                    <div class="row form-group m-2 flex-fill">
+                        <select name="course" class="form-control" asp-items="ViewBag.SchoolCourses" asp-for="@Model.Course" onchange="filterForm.submit()">
+                            <option value="" selected>Affiliated Course</option>
+                        </select>
+                    </div>
+                }
 
-    <hr/>
+                <input name="search" type="hidden" value="@Model.Search"/>
+            </form>
 
-    @if (!Model.Posts.Any())
-    {
-        <div class="container-fluid m-5" style="text-align: center">
-            <h5>No results. Please alter your search parameters.</h5>
         </div>
-    }
-    else
-    {
-        @foreach (Post p in Model.Posts)
-        {
-            <div class="card border-light" style="width: 18rem; margin: 10px;">
-                <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">@p.Title</h5>
-                    @if (p.Type == PostType.Selling)
+        <div class="col-md-9">
+            <div class="d-flex flex-wrap">
+                @if (!string.IsNullOrEmpty(Model.Search)) {
+                    <div style="width: 100%">
+                        <h3>Search results for: '@Model.Search'</h3>
+                    </div>                    
+                }
+        
+
+
+                @if (!Model.Posts.Any())
+                {
+                    <div class="container-fluid m-5" style="text-align: center">
+                        <h5>No results. Please alter your search parameters.</h5>
+                    </div>
+                }
+                else
+                {
+                    @foreach (Post p in Model.Posts)
                     {
-                        if (p.Price != null)
-                        {
-                            <p class="card-text">$@p.Price</p>
-                        }
-                        else
-                        {
-                            <p class="card-text">FREE</p>
-                        }
-                    }
-                    else if (p.MinPrice != null && p.MaxPrice != null)
-                    {
-                        <p class="card-text">$@p.MinPrice - $@p.MaxPrice</p>
-                    }
+                        <div class="card" style="width: 30%; margin: 10px;">
+                            <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@p.Title</h5>
+                                @if (p.Type == PostType.Selling)
+                                {
+                                    if (p.Price != null)
+                                    {
+                                        <p class="card-text">$@p.Price</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">FREE</p>
+                                    }
+                                }
+                                else if (p.MinPrice != null && p.MaxPrice != null)
+                                {
+                                    <p class="card-text">$@p.MinPrice - $p.MaxPrice</p>
+                                }
                 
-                    <a role = "button" class="btn btn-outline-dark" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
-                </div>
+                                <a class="btn btn-outline-dark" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
+                            </div>
+                        </div>
+                    }   
+                }
             </div>
-        }   
-    }
+        </div>
+    </div>
+
 </div>
+
+
