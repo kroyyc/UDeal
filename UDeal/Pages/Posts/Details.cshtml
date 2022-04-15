@@ -126,13 +126,13 @@
     @if (Model.IsFav)
     {
         <form method="post" asp-page-handler="remove" asp-route-id="@Model.Post.Id">
-            <input type="submit" value="Remove from Favourites" class="btn btn-outline-danger" />
+            <input type="submit" value="Remove from Favourites" class="btn btn-outline-danger mb-2" />
         </form>
     }
     else
     {
         <form method="post" asp-page-handler="fav" asp-route-id="@Model.Post.Id">
-            <input type="submit" value="Add to Favourites" class="btn btn-outline-success" />
+            <input type="submit" value="Add to Favourites" class="btn btn-outline-success mb-2" />
         </form>
     }    
 }

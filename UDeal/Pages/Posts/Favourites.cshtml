@@ -82,9 +82,10 @@
                 @Html.DisplayFor(modelItem => item.User.Id)
             </td>*@
             <td>
-                <form role = "button" class = "btn btn-outline-danger mb-2" id="favForm" method="post" asp-page-handler="remove" asp-route-id="@item.Id">
+                @*<a role = "button" class = "btn btn-outline-danger mb-2" id="favForm" method="post" asp-page-handler="remove" asp-route-id="@item.Id">*@
                     @*<a href="#" onclick="favForm.submit()">Remove</a> |*@
-                Remove</form> 
+                @*Remove</a> *@
+                <a role= "button" class = "btn btn-outline-danger mb-2" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                 <a role = "button" class = "btn btn-outline-dark" asp-page="./Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>

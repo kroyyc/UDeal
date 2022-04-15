@@ -75,7 +75,7 @@
                     }
                     else if (p.MinPrice != null && p.MaxPrice != null)
                     {
-                        <p class="card-text">$@p.MinPrice - $p.MaxPrice</p>
+                        <p class="card-text">$@p.MinPrice - $@p.MaxPrice</p>
                     }
                 
                     <a role = "button" class="btn btn-outline-dark" asp-page="/Posts/Details" asp-route-id="@p.Id">Details</a>
