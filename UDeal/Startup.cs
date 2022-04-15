@@ -36,11 +36,19 @@ namespace UDeal
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("ElevatedRights", policy => policy.RequireRole("Admin", "Moderator"));
+            });
+
             services.AddControllers();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizeFolder("/Posts");
-                options.Conventions.AuthorizeFolder("/Manage");
+                options.Conventions.AuthorizeFolder("/Manage", "ElevatedRights");
+                options.Conventions.AuthorizeFolder("/Manage/Schools", "RequireAdminRole");
+                options.Conventions.AuthorizeFolder("/Manage/Campuses", "RequireAdminRole");
             });
 
             services.AddSwaggerGen();
