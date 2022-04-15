@@ -1,0 +1,354 @@
+This was generated in Visual Studio using the script-dbcontext command in the package manager
+
+CREATE TABLE "Categories" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Categories" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NULL
+);
+
+
+CREATE TABLE "Roles" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_Roles" PRIMARY KEY,
+    "Name" TEXT NULL,
+    "NormalizedName" TEXT NULL,
+    "ConcurrencyStamp" TEXT NULL
+);
+
+
+CREATE TABLE "Schools" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Schools" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NULL,
+    "ShortName" TEXT NULL,
+    "Domain" TEXT NULL
+);
+
+
+CREATE TABLE "AspNetRoleClaims" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY AUTOINCREMENT,
+    "RoleId" TEXT NOT NULL,
+    "ClaimType" TEXT NULL,
+    "ClaimValue" TEXT NULL,
+    CONSTRAINT "FK_AspNetRoleClaims_Roles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "Roles" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Campuses" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Campuses" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NULL,
+    "City" TEXT NULL,
+    "SchoolId" INTEGER NOT NULL,
+    CONSTRAINT "FK_Campuses_Schools_SchoolId" FOREIGN KEY ("SchoolId") REFERENCES "Schools" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Courses" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Courses" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NULL,
+    "SchoolId" INTEGER NOT NULL,
+    CONSTRAINT "FK_Courses_Schools_SchoolId" FOREIGN KEY ("SchoolId") REFERENCES "Schools" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Users" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY,
+    "SchoolId" INTEGER NULL,
+    "CampusId" INTEGER NULL,
+    "UserName" TEXT NULL,
+    "NormalizedUserName" TEXT NULL,
+    "Email" TEXT NULL,
+    "NormalizedEmail" TEXT NULL,
+    "EmailConfirmed" INTEGER NOT NULL,
+    "PasswordHash" TEXT NULL,
+    "SecurityStamp" TEXT NULL,
+    "ConcurrencyStamp" TEXT NULL,
+    "PhoneNumber" TEXT NULL,
+    "PhoneNumberConfirmed" INTEGER NOT NULL,
+    "TwoFactorEnabled" INTEGER NOT NULL,
+    "LockoutEnd" TEXT NULL,
+    "LockoutEnabled" INTEGER NOT NULL,
+    "AccessFailedCount" INTEGER NOT NULL,
+    CONSTRAINT "FK_Users_Campuses_CampusId" FOREIGN KEY ("CampusId") REFERENCES "Campuses" ("Id") ON DELETE SET NULL,
+    CONSTRAINT "FK_Users_Schools_SchoolId" FOREIGN KEY ("SchoolId") REFERENCES "Schools" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "AspNetUserClaims" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_AspNetUserClaims" PRIMARY KEY AUTOINCREMENT,
+    "UserId" TEXT NOT NULL,
+    "ClaimType" TEXT NULL,
+    "ClaimValue" TEXT NULL,
+    CONSTRAINT "FK_AspNetUserClaims_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "AspNetUserLogins" (
+    "LoginProvider" TEXT NOT NULL,
+    "ProviderKey" TEXT NOT NULL,
+    "ProviderDisplayName" TEXT NULL,
+    "UserId" TEXT NOT NULL,
+    CONSTRAINT "PK_AspNetUserLogins" PRIMARY KEY ("LoginProvider", "ProviderKey"),
+    CONSTRAINT "FK_AspNetUserLogins_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "AspNetUserTokens" (
+    "UserId" TEXT NOT NULL,
+    "LoginProvider" TEXT NOT NULL,
+    "Name" TEXT NOT NULL,
+    "Value" TEXT NULL,
+    CONSTRAINT "PK_AspNetUserTokens" PRIMARY KEY ("UserId", "LoginProvider", "Name"),
+    CONSTRAINT "FK_AspNetUserTokens_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Contacts" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Contacts" PRIMARY KEY AUTOINCREMENT,
+    "AlternateEmail" TEXT NULL,
+    "Address" TEXT NULL,
+    "PhoneNumber" TEXT NULL,
+    "UserId" TEXT NULL,
+    CONSTRAINT "FK_Contacts_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Posts" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Posts" PRIMARY KEY AUTOINCREMENT,
+    "Title" TEXT NULL,
+    "Description" TEXT NULL,
+    "Quantity" INTEGER NOT NULL,
+    "Condition" INTEGER NOT NULL,
+    "Price" INTEGER NULL,
+    "MinPrice" INTEGER NULL,
+    "MaxPrice" INTEGER NULL,
+    "Type" INTEGER NOT NULL,
+    "UserId" TEXT NOT NULL,
+    "CategoryId" INTEGER NOT NULL,
+    "CourseId" INTEGER NULL,
+    "CampusId" INTEGER NULL,
+    "Created" TEXT NOT NULL DEFAULT (datetime('now','localtime')),
+    CONSTRAINT "FK_Posts_Campuses_CampusId" FOREIGN KEY ("CampusId") REFERENCES "Campuses" ("Id") ON DELETE SET NULL,
+    CONSTRAINT "FK_Posts_Categories_CategoryId" FOREIGN KEY ("CategoryId") REFERENCES "Categories" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_Posts_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE SET NULL,
+    CONSTRAINT "FK_Posts_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "UserRoles" (
+    "UserId" TEXT NOT NULL,
+    "RoleId" TEXT NOT NULL,
+    CONSTRAINT "PK_UserRoles" PRIMARY KEY ("UserId", "RoleId"),
+    CONSTRAINT "FK_UserRoles_Roles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "Roles" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_UserRoles_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "Images" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Images" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NULL,
+    "PostId" INTEGER NOT NULL,
+    CONSTRAINT "FK_Images_Posts_PostId" FOREIGN KEY ("PostId") REFERENCES "Posts" ("Id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE "UserFavourites" (
+    "UserId" TEXT NOT NULL,
+    "PostId" INTEGER NOT NULL,
+    CONSTRAINT "PK_UserFavourites" PRIMARY KEY ("UserId", "PostId"),
+    CONSTRAINT "FK_UserFavourites_Posts_PostId" FOREIGN KEY ("PostId") REFERENCES "Posts" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_UserFavourites_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (1, 'Textbooks');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (12, 'Books, Movies & Music');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (11, 'Home & Garden');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (9, 'Vehicles');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (8, 'Toys & Games');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (7, 'Clothing & Accessories');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (10, 'Hobbies');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (5, 'Tools');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (4, 'Housing');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (3, 'Furniture');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (2, 'Electronics');
+
+
+INSERT INTO "Categories" ("Id", "Name")
+VALUES (6, 'Appliances');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (7, 'mail.usask.ca', 'University of Saskatchewan', 'USask');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (1, 'ucalgary.ca', 'University of Calgary', 'UofC');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (2, 'ualberta.ca', 'University of Alberta', 'UofA');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (3, 'edu.sait.ca', 'Southern Alberta Insitute of Technology', 'SAIT');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (4, 'nait.ca', 'Northern Alberta Insitute of Technology', 'NAIT');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (5, 'student.ubc.ca', 'University of British Columbia', 'UBC');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (6, 'mtroyal.ca', 'Mount Royal University', 'MRU');
+
+
+INSERT INTO "Schools" ("Id", "Domain", "Name", "ShortName")
+VALUES (8, 'uvic.ca', 'University of Victoria', 'UVic');
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (1, 'Calgary', 'Main', 1);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (2, 'Calgary', 'Spyhhill', 1);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (3, 'Calgary', 'Downtown', 1);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (4, 'Doha', 'Quatar', 1);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (5, 'Edmonton', 'North', 2);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (6, 'Edmonton', 'Augustana', 2);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (7, 'Edmonton', 'Saint-Jean', 2);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (8, 'Edmonton', 'South', 2);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (9, 'Calgary', 'Main', 3);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (10, 'Edmonton', 'Main', 4);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (11, 'Vancouver', 'Vancouver', 5);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (12, 'Kelowna', 'Okanagan', 5);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (13, 'Calgary', 'Main', 6);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (14, 'Saskatoon', 'Main', 7);
+
+
+INSERT INTO "Campuses" ("Id", "City", "Name", "SchoolId")
+VALUES (15, 'Victoria', 'Main', 8);
+
+
+CREATE INDEX "IX_AspNetRoleClaims_RoleId" ON "AspNetRoleClaims" ("RoleId");
+
+
+CREATE INDEX "IX_AspNetUserClaims_UserId" ON "AspNetUserClaims" ("UserId");
+
+
+CREATE INDEX "IX_AspNetUserLogins_UserId" ON "AspNetUserLogins" ("UserId");
+
+
+CREATE INDEX "IX_Campuses_SchoolId" ON "Campuses" ("SchoolId");
+
+
+CREATE UNIQUE INDEX "IX_Contacts_UserId" ON "Contacts" ("UserId");
+
+
+CREATE INDEX "IX_Courses_SchoolId" ON "Courses" ("SchoolId");
+
+
+CREATE INDEX "IX_Images_PostId" ON "Images" ("PostId");
+
+
+CREATE INDEX "IX_Posts_CampusId" ON "Posts" ("CampusId");
+
+
+CREATE INDEX "IX_Posts_CategoryId" ON "Posts" ("CategoryId");
+
+
+CREATE INDEX "IX_Posts_CourseId" ON "Posts" ("CourseId");
+
+
+CREATE INDEX "IX_Posts_UserId" ON "Posts" ("UserId");
+
+
+CREATE UNIQUE INDEX "RoleNameIndex" ON "Roles" ("NormalizedName");
+
+
+CREATE INDEX "IX_UserFavourites_PostId" ON "UserFavourites" ("PostId");
+
+
+CREATE INDEX "IX_UserRoles_RoleId" ON "UserRoles" ("RoleId");
+
+
+CREATE INDEX "EmailIndex" ON "Users" ("NormalizedEmail");
+
+
+CREATE INDEX "IX_Users_CampusId" ON "Users" ("CampusId");
+
+
+CREATE INDEX "IX_Users_SchoolId" ON "Users" ("SchoolId");
+
+
+CREATE UNIQUE INDEX "UserNameIndex" ON "Users" ("NormalizedUserName");
+
+
