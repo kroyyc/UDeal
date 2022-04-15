@@ -121,6 +121,28 @@ namespace UDeal
                 }
 
             }
+
+            if (userManager.FindByEmailAsync("moderator@ucalgary.ca").Result == null)
+            {
+                User moderator = new User
+                {
+                    UserName = "moderator@ucalgary.ca",
+                    Email = "moderator@ucalgary.ca",
+                    EmailConfirmed = true
+                };
+
+                IdentityResult result = userManager.CreateAsync(moderator, "Moderator123!").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(moderator, "Moderator");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to seed moderator user");
+                }
+
+            }
         }
     }
 }
