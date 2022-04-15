@@ -41,6 +41,14 @@ namespace UDeal.Data
                 .Property(p => p.Created)
                 .HasDefaultValueSql("datetime('now','localtime')");
 
+            modelBuilder.Entity<Post>()
+                .HasOne<Campus>(p => p.Campus)
+                .WithMany(c => c.Posts)
+                .HasForeignKey(c => c.CampusId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
             modelBuilder.Seed();
         }
     }

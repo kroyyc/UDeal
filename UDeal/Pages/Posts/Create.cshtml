@@ -69,7 +69,9 @@
 
             <div class="form-group">
                 <label asp-for="Post.Campus" class="control-label">Campus</label>
-                <select asp-for="Post.CampusId" class ="form-control" asp-items="ViewBag.SchoolCampuses" required></select>
+                <select asp-for="Post.CampusId" class ="form-control" asp-items="ViewBag.SchoolCampuses">
+                    <option value="@null">None</option>
+                </select>
                 <span asp-validation-for="Post.CampusId" class="text-danger"></span>
             </div>
 
