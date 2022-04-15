@@ -12,6 +12,7 @@ namespace UDeal.Models
         public School School { get; set; }
 
         public ICollection<Post> Posts { get; set; }
+        public ICollection<User> Users { get; set; }
 
     }
 

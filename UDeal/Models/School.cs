@@ -8,5 +8,14 @@ namespace UDeal.Models
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string Domain { get; set; }
+        public ICollection<User> Users { get; set; }
+    }
+
+    public class SchoolDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
+        public string Domain { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace UDeal.Models
+﻿using System.Collections.Generic;
+
+namespace UDeal.Models
 {
     public class Course
     {
@@ -6,6 +8,8 @@
         public string Name { get; set; }
         public int SchoolId { get; set; }
         public School School { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
     }
 
     public class CourseDTO
