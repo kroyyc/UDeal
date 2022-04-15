@@ -25,16 +25,16 @@ namespace UDeal.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FavouriteDTO>>> GetFavs()
         {
-            return await _context.Favs
+            return await _context.UserFavourites
                 .Select(f => ItemToDTO(f))
                 .ToListAsync();
         }
 
         // GET: api/Favourites/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FavouriteDTO>> GetFavourite(string id)
+        [HttpGet("{userId}/{postId}")]
+        public async Task<ActionResult<FavouriteDTO>> GetFavourite(string userId, int postId)
         {
-            var favourite = await _context.Favs.FindAsync(id);
+            var favourite = await _context.UserFavourites.FindAsync(userId, postId);
 
             if (favourite == null)
             {
@@ -85,7 +85,7 @@ namespace UDeal.Controllers
                 PostId = favouriteDTO.PostId,
                 UserId = favouriteDTO.UserId
             };
-            _context.Favs.Add(favourite);
+            _context.UserFavourites.Add(favourite);
             try
             {
                 await _context.SaveChangesAsync();
@@ -106,16 +106,16 @@ namespace UDeal.Controllers
         }
 
         // DELETE: api/Favourites/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFavourite(string id)
+        [HttpDelete("{userId}/{postId}")]
+        public async Task<IActionResult> DeleteFavourite(string userId, int postId)
         {
-            var favourite = await _context.Favs.FindAsync(id);
+            var favourite = await _context.UserFavourites.FindAsync(userId, postId);
             if (favourite == null)
             {
                 return NotFound();
             }
 
-            _context.Favs.Remove(favourite);
+            _context.UserFavourites.Remove(favourite);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -123,7 +123,7 @@ namespace UDeal.Controllers
 
         private bool FavouriteExists(string id)
         {
-            return _context.Favs.Any(e => e.UserId == id);
+            return _context.UserFavourites.Any(e => e.UserId == id);
         }
 
         private static FavouriteDTO ItemToDTO(Favourite favourite) =>

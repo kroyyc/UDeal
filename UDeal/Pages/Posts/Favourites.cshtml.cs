@@ -28,7 +28,7 @@ namespace UDeal.Pages.Posts
         public async Task OnGetAsync()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var favIds = _context.Favs.Where(f => f.UserId == user.Id).Select(f => f.PostId);
+            var favIds = _context.UserFavourites.Where(f => f.UserId == user.Id).Select(f => f.PostId);
             Post = await _context.Posts
                 .Where(p => favIds.Contains(p.Id))
                 .Include(p => p.Course)
@@ -40,7 +40,7 @@ namespace UDeal.Pages.Posts
         public async Task<IActionResult> OnPostRemove(int id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            _context.Favs.Remove(new Favourite
+            _context.UserFavourites.Remove(new Favourite
             {
                 PostId = id,
                 UserId = user.Id

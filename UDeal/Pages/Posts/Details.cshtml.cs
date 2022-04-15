@@ -65,7 +65,7 @@ namespace UDeal.Pages.Posts
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                IsFav = _context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any();
+                IsFav = _context.UserFavourites.Where(f => f.PostId == id && f.UserId == user.Id).Any();
             }
          
 
@@ -79,7 +79,7 @@ namespace UDeal.Pages.Posts
         public async Task<IActionResult> OnPostRemove(int id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            _context.Favs.Remove(new Favourite
+            _context.UserFavourites.Remove(new Favourite
             {
                 PostId = id,
                 UserId = user.Id
@@ -92,7 +92,7 @@ namespace UDeal.Pages.Posts
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             
-            if (!_context.Favs.Where(f => f.PostId == id && f.UserId == user.Id).Any())
+            if (!_context.UserFavourites.Where(f => f.PostId == id && f.UserId == user.Id).Any())
             {
                 var fav = new Favourite
                 {
@@ -101,7 +101,7 @@ namespace UDeal.Pages.Posts
                     UserId = user.Id,
                     User = user
                 };
-                _context.Favs.Add(fav);
+                _context.UserFavourites.Add(fav);
                 await _context.SaveChangesAsync();
             }
 

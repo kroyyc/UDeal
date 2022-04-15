@@ -21,7 +21,7 @@ namespace UDeal.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Favourite> Favs { get; set; } 
+        public DbSet<Favourite> UserFavourites { get; set; } 
         public DbSet<Image> Images { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
