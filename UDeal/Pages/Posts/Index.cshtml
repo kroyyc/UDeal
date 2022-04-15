@@ -12,174 +12,179 @@
 <p>
     <a role = "button" class = "btn btn-outline-primary" asp-page="Create" asp-route-type="0">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Title)
-            </th>
-           @* <th>
-                @Html.DisplayNameFor(model => model.Post[0].Description)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].Quantity)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].Condition)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Price)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].MinPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].Type)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Course)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Campus)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Post.Where(p => p.Type == PostType.Selling)) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-           @* <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>*@
-           @* <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.MinPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxPrice)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Campus.Name)
-            </td>
-            <td>
-                <a role = "button" class = "btn btn-outline-info" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a role = "button" class = "btn btn-outline-dark" asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a role= "button" class = "btn btn-outline-danger" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div style="overflow-x: auto">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Title)
+                </th>
+               @* <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Description)
+                </th>*@
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Quantity)
+                </th>*@
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Condition)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Price)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+                </th>*@
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Type)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Course)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Campus)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Post.Where(p => p.Type == PostType.Selling)) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                   @* <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>*@
+                   @* <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>*@
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Condition)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.MinPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPrice)
+                    </td>*@
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Campus.Name)
+                    </td>
+                    <td>
+                        <a role = "button" class = "btn btn-outline-info mb-2" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                        <a role = "button" class = "btn btn-outline-dark mb-2" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <a role= "button" class = "btn btn-outline-danger mb-2" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+</div>
 
 <h3>Looking</h3>
 <p>
     <a role = "button" class = "btn btn-outline-primary" asp-page="Create" asp-route-type="1">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Title)
-            </th>
-           @* <th>
-                @Html.DisplayNameFor(model => model.Post[0].Description)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Condition)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].Price)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].MinPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Post[0].Type)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Course)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Campus)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Post.Where(p => p.Type == PostType.Looking)) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-           @* <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.MinPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxPrice)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Campus.Name)
-            </td>
-            <td>
-                 <a role = "button" class = "btn btn-outline-info mb-2" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a role = "button" class = "btn btn-outline-dark mb-2" asp-page="./Details" asp-route-id="@item.Id">Details</a> 
-                <a role= "button" class = "btn btn-outline-danger d-flex justify-content-center" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div style="overflow-x: auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Title)
+                </th>
+               @* <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Description)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Condition)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Price)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Type)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Course)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Campus)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Post.Where(p => p.Type == PostType.Looking)) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Condition)
+                    </td>
+                   @* <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MinPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPrice)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Campus.Name)
+                    </td>
+                    <td>
+                        <a role = "button" class = "btn btn-outline-info mb-2" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                        <a role = "button" class = "btn btn-outline-dark mb-2" asp-page="./Details" asp-route-id="@item.Id">Details</a> 
+                        <a role= "button" class = "btn btn-outline-danger d-flex justify-content-center" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+</div>
