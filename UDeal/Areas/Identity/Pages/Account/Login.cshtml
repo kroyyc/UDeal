@@ -32,18 +32,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-outline-dark mb-2">Log in</button>
+                    <button type="submit" class="btn btn-outline-dark mb-5">Log in</button>
                 </div>
-                <div class="form-group align-items-center">
-                    <p>
+                <div class="form-group align-items-center d-grid gap-2">
+                    
                         <a role = "button" class = "btn btn-outline-info" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a role = "button" class = "btn btn-outline-secondary" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a role = "button" class = "btn btn-outline-light" id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
+                    
+                    
+                        <a role = "button" class = "btn btn-outline-primary" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    
+                    
+                        <a role = "button" class = "btn btn-outline-secondary" id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    
                 </div>
             </form>
         </section>
