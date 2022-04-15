@@ -136,7 +136,8 @@ namespace UDeal
                 {
                     UserName = "moderator@ucalgary.ca",
                     Email = "moderator@ucalgary.ca",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    SchoolId = 1
                 };
 
                 IdentityResult result = userManager.CreateAsync(moderator, "Moderator123!").Result;

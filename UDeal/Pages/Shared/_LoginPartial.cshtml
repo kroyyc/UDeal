@@ -25,9 +25,13 @@
             <a  class="dropdown-item text-dark" asp-area="" asp-page="/Posts/Favourites">My Favourites</a>
 
             <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Identity">My Account</a>
-            @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("Admin") || User.IsInRole("Moderator")) 
             {
                 <div class="dropdown-divider"></div>
+                <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Posts/Index" title="Manage">All Posts</a>
+            }
+            @if (User.IsInRole("Admin"))
+            {
                 <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Schools/Index" title="Manage">All Schools</a>
                 <a  class="dropdown-item text-dark" asp-area="" asp-page="/Manage/Campuses/Index" title="Manage">All Campuses</a>
             }
