@@ -79,12 +79,16 @@
                 <dd class="col-6">
                     @Html.DisplayFor(model => model.Post.Condition)
                 </dd>
-                <dt class="col-6">
-                    @Html.DisplayNameFor(model => model.Post.Campus)
-                </dt>
-                <dd class="col-6">
-                    @Html.DisplayFor(model => model.Post.Campus.Name)
-                </dd>
+
+                @if (Model.Post.Campus != null)
+                {
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Post.Campus)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.Post.Campus.Name)
+                    </dd>   
+                }
 
                 @if (Model.Post.Type == Models.PostType.Selling)
                 {
@@ -122,15 +126,16 @@
                 <dd class="col-6">
                     @Html.DisplayFor(model => model.Post.Category.Name)
                 </dd>
-
-
-        
-                <dt class="col-6">
-                    @Html.DisplayNameFor(model => model.Post.Course)
-                </dt>
-                <dd class="col-6">
-                    @Html.DisplayFor(model => model.Post.Course.Name)
-                </dd>
+                
+                @if (Model.Post.Course != null)
+                {
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Post.Course)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.Post.Course.Name)
+                    </dd>   
+                }
 
         
                 <hr />
@@ -141,21 +146,26 @@
                 <dd class="col-6">
                     <a target="_blank" href="@("mailto:" + Model.PosterContact.AlternateEmail)">@Html.DisplayFor(model => model.PosterContact.AlternateEmail)</a>
                 </dd>
-                <dt class="col-6">
-                    Phone Number
-                </dt>
-                <dd class="col-6">
-                    <a target="_blank" href="@("tel:" + Model.PosterContact.PhoneNumber)">@Html.DisplayFor(model => model.PosterContact.PhoneNumber)</a>
-                </dd>
-                <dt class="col-6">
-                    Address
-                </dt>
-                <dd class="col-6">
-                    <a target="_blank" href="@("https://maps.google.com/?q=" + Model.PosterContact.Address)">@Html.DisplayFor(model => model.PosterContact.Address)</a>
-                </dd>
-        
-        
 
+                @if (Model.PosterContact.PhoneNumber != null)
+                {
+                    <dt class="col-6">
+                        Phone Number
+                    </dt>
+                    <dd class="col-6">
+                        <a target="_blank" href="@("tel:" + Model.PosterContact.PhoneNumber)">@Html.DisplayFor(model => model.PosterContact.PhoneNumber)</a>
+                    </dd>   
+                }
+
+                @if (Model.PosterContact.Address != null)
+                {
+                    <dt class="col-6">
+                        Address
+                    </dt>
+                    <dd class="col-6">
+                        <a target="_blank" href="@("https://maps.google.com/?q=" + Model.PosterContact.Address)">@Html.DisplayFor(model => model.PosterContact.Address)</a>
+                    </dd>  
+                }
             </dl>
 
         </div>
