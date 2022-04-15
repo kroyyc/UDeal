@@ -82,10 +82,11 @@
                 @Html.DisplayFor(modelItem => item.User.Id)
             </td>*@
             <td>
-                <form id="favForm" method="post" asp-page-handler="remove" asp-route-id="@item.Id">
-                    <a href="#" onclick="favForm.submit()">Remove</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                </form>
+                @*<a role = "button" class = "btn btn-outline-danger mb-2" id="favForm" method="post" asp-page-handler="remove" asp-route-id="@item.Id">*@
+                    @*<a href="#" onclick="favForm.submit()">Remove</a> |*@
+                @*Remove</a> *@
+                <a role= "button" class = "btn btn-outline-danger mb-2 d-flex justify-content-center" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a role = "button" class = "btn btn-outline-dark d-flex justify-content-center" asp-page="./Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }
