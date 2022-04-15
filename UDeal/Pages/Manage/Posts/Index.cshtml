@@ -1,0 +1,110 @@
+﻿@page
+@model UDeal.Pages.Moderate.Posts.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div style="overflow-x: auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Title)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Condition)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].MinPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].MaxPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Type)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].User)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Post[0].Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Course)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Campus)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post[0].Created)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Post) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Condition)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MinPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserName)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Category.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Campus.Id)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+
+                        <a role = "button" class = "btn btn-outline-dark mb-2" asp-page="/Posts/Details" asp-route-id="@item.Id">Details</a>
+                        <a role= "button" class = "btn btn-outline-danger mb-2" asp-page="/Posts/Delete" asp-route-id="@item.Id">Delete</a>
+
+                        @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+</div>
