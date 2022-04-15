@@ -13,113 +13,153 @@
 <h1>Details</h1>
 
 
-<div>
+<div class="container">
     <h4>Post</h4>
     <hr />
-    <img src="@ViewBag.ImagePath"/>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Quantity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Quantity)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Condition)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Condition)
-        </dd>
-        <dd class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Campus)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Campus.Name)
-        </dd>
 
-        @if (Model.Post.Type == Models.PostType.Selling)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Post.Price)
-            </dt>
-            <dd class="col-sm-10">
-                $@Html.DisplayFor(model => model.Post.Price)
-            </dd>
-        }
-        else
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Post.MinPrice)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Post.MinPrice)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Post.MaxPrice)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Post.MaxPrice)
-            </dd>
-        }
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Type)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Type)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Category.Name)
-        </dd>
+    <div class="row">
+        <div class="col-md-4">
+            @if (ViewBag.Images != null)
+            {
+                <div style="min-height: 100%" id="carouselExampleFade" class="carousel slide carousel-fade align-middle" data-ride="carousel">
+                    <div class="carousel-inner">
+                
+                        @for (int i = 0; i < ViewBag.Images.Count; i++)
+                        {
+                            string active = null;
+                            if (i == 0)
+                            {
+                                active = "active";
+                            }
+                            <div class="carousel-item align-middle @active">
+                                <img src="@ViewBag.Images[i]" class="d-block w-100" alt="...">
+                            </div>
+                        }
+                    </div>
+
+                    <button style="color: black" class="carousel-control-prev" type="button" data-target="#carouselExampleFade" data-slide="prev">
+                        <span style="background-color: black" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        @*<span class="sr-only">Previous</span>*@
+                    </button>
+                    <button style="color: black" class="carousel-control-next" type="button" data-target="#carouselExampleFade" data-slide="next">
+                        <span style="background-color: black" class="carousel-control-next-icon" aria-hidden="true"></span>
+                        @*<span class="sr-only">Next</span>*@
+                    </button>
+                </div>
+   
+            }
+            else
+            {
+                // no photo for this post
+            }
+        </div>
+        <div class="col-md-8">
+            <dl class="row justify-content-between">
+                <dt class="col-4">
+                    @Html.DisplayNameFor(model => model.Post.Title)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Title)
+                </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Description)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Description)
+                </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Quantity)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Quantity)
+                </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Condition)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Condition)
+                </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Campus)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Campus.Name)
+                </dd>
+
+                @if (Model.Post.Type == Models.PostType.Selling)
+                {
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Post.Price)
+                    </dt>
+                    <dd class="col-6">
+                        $@Html.DisplayFor(model => model.Post.Price)
+                    </dd>
+                }
+                else
+                {
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Post.MinPrice)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.Post.MinPrice)
+                    </dd>
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Post.MaxPrice)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.Post.MaxPrice)
+                    </dd>
+                }
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Type)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Type)
+                </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Category)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Category.Name)
+                </dd>
 
 
         
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Course)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Course.Name)
-        </dd>
+                <dt class="col-6">
+                    @Html.DisplayNameFor(model => model.Post.Course)
+                </dt>
+                <dd class="col-6">
+                    @Html.DisplayFor(model => model.Post.Course.Name)
+                </dd>
 
         
-        <hr />
-        <h5>Poster's Contact Information</h5>
-        <dt class="col-sm-2">
-            Email
-        </dt>
-        <dd class="col-sm-10">
-            <a target="_blank" href="@("mailto:" + Model.PosterContact.AlternateEmail)">@Html.DisplayFor(model => model.PosterContact.AlternateEmail)</a>
-        </dd>
-        <dt class="col-sm-2">
-            Phone Number
-        </dt>
-        <dd class="col-sm-10">
-            <a target="_blank" href="@("tel:" + Model.PosterContact.PhoneNumber)">@Html.DisplayFor(model => model.PosterContact.PhoneNumber)</a>
-        </dd>
-        <dt class="col-sm-2">
-            Address
-        </dt>
-        <dd class="col-sm-10">
-            <a target="_blank" href="@("https://maps.google.com/?q=" + Model.PosterContact.Address)">@Html.DisplayFor(model => model.PosterContact.Address)</a>
-        </dd>
+                <hr />
+                <h5>Poster's Contact Information</h5>
+                <dt class="col-6">
+                    Email
+                </dt>
+                <dd class="col-6">
+                    <a target="_blank" href="@("mailto:" + Model.PosterContact.AlternateEmail)">@Html.DisplayFor(model => model.PosterContact.AlternateEmail)</a>
+                </dd>
+                <dt class="col-6">
+                    Phone Number
+                </dt>
+                <dd class="col-6">
+                    <a target="_blank" href="@("tel:" + Model.PosterContact.PhoneNumber)">@Html.DisplayFor(model => model.PosterContact.PhoneNumber)</a>
+                </dd>
+                <dt class="col-6">
+                    Address
+                </dt>
+                <dd class="col-6">
+                    <a target="_blank" href="@("https://maps.google.com/?q=" + Model.PosterContact.Address)">@Html.DisplayFor(model => model.PosterContact.Address)</a>
+                </dd>
         
         
 
-    </dl>
+            </dl>
+
+        </div>
+    </div>
 </div>
 @if (SignInManager.IsSignedIn(User))
 {

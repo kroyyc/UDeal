@@ -45,8 +45,10 @@ namespace UDeal.Pages.Posts
 
         [BindProperty]
         public Post Post { get; set; }
+
         [BindProperty]
-        public IFormFile Photo { get; set; }
+        public List<IFormFile> Images { get; set; }
+
         [BindProperty]
         public string CourseName { get; set; }
       
@@ -86,31 +88,34 @@ namespace UDeal.Pages.Posts
             _context.Posts.Add(Post);
             await _context.SaveChangesAsync();
 
-            string filePath = ProcessUploadedFile();
-            var image = new Image
+            foreach (IFormFile file in Images)
             {
-                Name = filePath,
-                Post = Post,
-                PostId = Post.Id
-            };
-            _context.Images.Add(image);
+                string filePath = ProcessUploadedFile(file);
+                var image = new Image
+                {
+                    Name = filePath,
+                    Post = Post,
+                    PostId = Post.Id
+                };
+                _context.Images.Add(image);
+            }
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Posts/Index");
         }
 
-        private string ProcessUploadedFile()
+        private string ProcessUploadedFile(IFormFile file)
         {
             string uniqueFileName = null;
 
-            if (Photo != null)
+            if (file != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + Photo.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    Photo.CopyTo(fileStream);
+                    file.CopyTo(fileStream);
                 }
             }
 

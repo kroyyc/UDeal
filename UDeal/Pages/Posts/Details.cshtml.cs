@@ -30,8 +30,12 @@ namespace UDeal.Pages.Posts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
-            ViewData["ImagePath"] = image != null ? "/images/" + image.Name : "https://via.placeholder.com/300";
+
+            List<Image> images = _context.Images.Where(i => i.PostId == id).ToList();
+            ViewData["Images"] = images.Select(i => "/images/" + i.Name).ToList();
+
+            //var image = await _context.Images.Where(x => x.PostId == id).FirstOrDefaultAsync();
+            //ViewData["ImagePath"] = image != null ? "/images/" + image.Name : "https://via.placeholder.com/300";
             
             if (id == null)
             {
@@ -52,6 +56,10 @@ namespace UDeal.Pages.Posts
                 {
                     AlternateEmail = User.Identity.Name
                 };
+            }
+            else if (PosterContact.AlternateEmail == null)
+            {
+                PosterContact.AlternateEmail = User.Identity.Name;
             }
 
             if (_signInManager.IsSignedIn(User))
