@@ -57,6 +57,10 @@ namespace UDeal.Pages.Posts
                     AlternateEmail = User.Identity.Name
                 };
             }
+            else if (PosterContact.AlternateEmail == null)
+            {
+                PosterContact.AlternateEmail = User.Identity.Name;
+            }
 
             if (_signInManager.IsSignedIn(User))
             {
