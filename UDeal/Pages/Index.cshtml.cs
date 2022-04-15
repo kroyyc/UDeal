@@ -47,6 +47,12 @@ namespace UDeal.Pages
         [BindProperty(SupportsGet = true)]
         public int? Course { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string? Sort { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public PostType? Type { get; set; }
+
         // End of query parameters
 
         public async Task OnGetAsync()
@@ -75,6 +81,11 @@ namespace UDeal.Pages
                 posts = posts.Where(p => p.Title.ToLower().Contains(lowerSearch) || p.Description.ToLower().Contains(lowerSearch));
             }
 
+            if (Type != null)
+            {
+                posts = posts.Where(p => p.Type == Type);
+            }
+
             if (Category > 0)
             {
                 posts = posts.Where(p => p.CategoryId.Equals(Category));
@@ -95,12 +106,28 @@ namespace UDeal.Pages
                 // Here we need to filter posts based on their campusId, when the relation is added
                 posts = posts.Where(p => p.CampusId.Equals(Campus));
             }
-            //else if (Campus == null && currentUser != null && !currentUser.CampusId.Equals(null) && School.Equals(currentUser.SchoolId))
-            //{
-            //    Campus defaultCampus= (int) currentUser.CampusId;
-            //    Campus filterCampus;
-            //    posts = posts.Where(p => p.CampusId.Equals(currentUser.CampusId));
-            //}
+            
+            switch (Sort)
+            {
+                case "date_asc":
+                    posts = posts.OrderBy(p => p.Created);
+                    break;
+                case "price_asc":
+                    posts = posts.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    posts = posts.OrderByDescending(p => p.Price);
+                    break;
+                case "title_asc":
+                    posts = posts.OrderBy(p => p.Title.ToLower());
+                    break;
+                case "title_desc":
+                    posts = posts.OrderByDescending(p => p.Title.ToLower());
+                    break;
+                default:
+                    posts = posts.OrderByDescending(p => p.Created);
+                    break;
+            }
             
 
             Posts = await posts.Include(p => p.User).ToListAsync();
