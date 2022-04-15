@@ -87,6 +87,7 @@ namespace UDeal.Controllers
             post.Type = postDTO.Type;
             post.Course = _context.Courses.Find(postDTO.CourseId);
             post.Campus = _context.Campuses.Find(postDTO.CampusId);
+            post.Created = postDTO.Created;
           
             try
             {
@@ -170,6 +171,7 @@ namespace UDeal.Controllers
                 Type = post.Type,
                 CourseId = post.CourseId,
                 CampusId = post.CampusId,
+                Created = post.Created
             };
     }
 }
