@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Post.Quantity" class="control-label"></label>
-                <input asp-for="Post.Quantity" class="form-control" min="1" />
+                <input asp-for="Post.Quantity" class="form-control" min="1" value="1" />
                 <span asp-validation-for="Post.Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -69,7 +69,9 @@
 
             <div class="form-group">
                 <label asp-for="Post.Campus" class="control-label">Campus</label>
-                <select asp-for="Post.CampusId" class ="form-control" asp-items="ViewBag.SchoolCampuses" required></select>
+                <select asp-for="Post.CampusId" class ="form-control" asp-items="ViewBag.SchoolCampuses">
+                    <option value="@null">None</option>
+                </select>
                 <span asp-validation-for="Post.CampusId" class="text-danger"></span>
             </div>
 

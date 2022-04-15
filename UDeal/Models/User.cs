@@ -8,8 +8,11 @@ namespace UDeal.Models
         public int? SchoolId { get; set; }  // Optional: some users like admin may not have a school. New users must however
         public School School { get; set; }
 
-        public int? CampusId { get; set; }
         public Campus Campus { get; set; }
+        public int? CampusId { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
+        public Contact Contact { get; set; }
 
     }
 }

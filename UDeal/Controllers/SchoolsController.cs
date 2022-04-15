@@ -23,14 +23,16 @@ namespace UDeal.Controllers
 
         // GET: api/Schools
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<School>>> GetSchools()
+        public async Task<ActionResult<IEnumerable<SchoolDTO>>> GetSchools()
         {
-            return await _context.Schools.ToListAsync();
+            return await _context.Schools
+                .Select(s => ItemToDTO(s))
+                .ToListAsync();
         }
 
         // GET: api/Schools/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<School>> GetSchool(int id)
+        public async Task<ActionResult<SchoolDTO>> GetSchool(int id)
         {
             var school = await _context.Schools.FindAsync(id);
 
@@ -39,18 +41,29 @@ namespace UDeal.Controllers
                 return NotFound();
             }
 
-            return school;
+            return ItemToDTO(school);
         }
 
         // PUT: api/Schools/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchool(int id, School school)
+        public async Task<IActionResult> PutSchool(int id, SchoolDTO schoolDTO)
         {
-            if (id != school.Id)
+            if (id != schoolDTO.Id)
             {
                 return BadRequest();
             }
+
+            var school = await _context.Schools.FindAsync(id);
+
+            if (school == null)
+            {
+                return NotFound();
+            }
+
+            school.ShortName = schoolDTO.ShortName;
+            school.Domain = schoolDTO.Domain;
+            school.Name = schoolDTO.Name;
 
             _context.Entry(school).State = EntityState.Modified;
 
@@ -76,12 +89,20 @@ namespace UDeal.Controllers
         // POST: api/Schools
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<School>> PostSchool(School school)
+        public async Task<ActionResult<SchoolDTO>> PostSchool(SchoolDTO schoolDTO)
         {
+            var school = new School
+            {
+                Id = schoolDTO.Id,
+                Name = schoolDTO.Name,
+                ShortName = schoolDTO.ShortName,
+                Domain = schoolDTO.Domain
+            };
+
             _context.Schools.Add(school);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSchool", new { id = school.Id }, school);
+            return CreatedAtAction(nameof(GetSchool), new { id = school.Id }, ItemToDTO(school));
         }
 
         // DELETE: api/Schools/5
@@ -104,5 +125,14 @@ namespace UDeal.Controllers
         {
             return _context.Schools.Any(e => e.Id == id);
         }
+
+        private static SchoolDTO ItemToDTO(School school) =>
+            new SchoolDTO
+            {
+                Id = school.Id,
+                Name = school.Name,
+                Domain = school.Domain,
+                ShortName = school.ShortName
+            };
     }
 }

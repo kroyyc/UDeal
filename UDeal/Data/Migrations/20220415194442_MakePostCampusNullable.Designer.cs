@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDeal.Data;
 
 namespace UDeal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220415194442_MakePostCampusNullable")]
+    partial class MakePostCampusNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,8 +375,7 @@ namespace UDeal.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Contacts");
                 });
@@ -477,7 +478,6 @@ namespace UDeal.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -710,9 +710,8 @@ namespace UDeal.Data.Migrations
             modelBuilder.Entity("UDeal.Models.Contact", b =>
                 {
                     b.HasOne("UDeal.Models.User", "User")
-                        .WithOne("Contact")
-                        .HasForeignKey("UDeal.Models.Contact", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -772,15 +771,12 @@ namespace UDeal.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("UDeal.Models.Course", "Course")
-                        .WithMany("Posts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("UDeal.Models.User", "User")
-                        .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Campus");
 
@@ -794,14 +790,12 @@ namespace UDeal.Data.Migrations
             modelBuilder.Entity("UDeal.Models.User", b =>
                 {
                     b.HasOne("UDeal.Models.Campus", "Campus")
-                        .WithMany("Users")
-                        .HasForeignKey("CampusId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("CampusId");
 
                     b.HasOne("UDeal.Models.School", "School")
-                        .WithMany("Users")
-                        .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
 
                     b.Navigation("Campus");
 
@@ -810,25 +804,6 @@ namespace UDeal.Data.Migrations
 
             modelBuilder.Entity("UDeal.Models.Campus", b =>
                 {
-                    b.Navigation("Posts");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("UDeal.Models.Course", b =>
-                {
-                    b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("UDeal.Models.School", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("UDeal.Models.User", b =>
-                {
-                    b.Navigation("Contact");
-
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
