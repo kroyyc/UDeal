@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +17,12 @@ namespace UDeal.Controllers
     public class ImagesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ImagesController(ApplicationDbContext context)
+        public ImagesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Images
@@ -44,47 +48,15 @@ namespace UDeal.Controllers
             return ItemToDTO(image);
         }
 
-        // PUT: api/Images/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutImage(int id, Image image)
-        //{
-        //    if (id != image.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(image).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ImageExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Images
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ImageDTO>> PostImage(ImageDTO imageDTO)
+        [HttpPost("upload")]
+        public async Task<ActionResult<ImageDTO>> UploadImage(IFormFile file, int postId)
         {
+            string fileName = ProcessUploadedFile(file);
+
             var image = new Image
             {
-                Id = imageDTO.Id,
-                Name = imageDTO.Name,
-                PostId = imageDTO.PostId,
+                Name = fileName,
+                PostId = postId,
             };
             _context.Images.Add(image);
             await _context.SaveChangesAsync();
@@ -111,6 +83,24 @@ namespace UDeal.Controllers
         private bool ImageExists(int id)
         {
             return _context.Images.Any(e => e.Id == id);
+        }
+
+        private string ProcessUploadedFile(IFormFile file)
+        {
+            string uniqueFileName = null;
+
+            if (file != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+            }
+
+            return uniqueFileName;
         }
 
         private static ImageDTO ItemToDTO(Image image) =>
