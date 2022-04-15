@@ -28,14 +28,14 @@
                 <select asp-for="Campus.SchoolId" class ="form-control" asp-items="ViewBag.SchoolId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-success mt-1 mb-2" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+   <a role="button" class = "btn btn-outline-secondary" asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
