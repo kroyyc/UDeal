@@ -22,14 +22,46 @@ namespace UDeal.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> Search(string title)
+        public async Task<ActionResult<IEnumerable<PostDTO>>> Search(
+            string? keyword, 
+            int? type,
+            int? categoryId,
+            int? schoolId,
+            int? campusId,
+            int? courseId)
         {
 
             IQueryable<Post> posts = _context.Posts;
 
-            if (!string.IsNullOrEmpty(title))
+            if (!string.IsNullOrEmpty(keyword))
             {
-                posts = posts.Where(x => x.Title.Contains(title));
+                keyword = keyword.Trim().ToLower();
+                posts = posts.Where(x => x.Title.ToLower().Contains(keyword) || x.Description.ToLower().Contains(keyword));
+            }
+
+            if (type != null)
+            {
+                posts.Where(p => p.Type.Equals(type));
+            }
+
+            if (categoryId != null)
+            {
+                posts = posts.Where(p => p.CategoryId.Equals(categoryId));
+            }
+
+            if (schoolId != null)
+            {
+                posts = posts.Include(p => p.User).Where(p => p.User.SchoolId.Equals(schoolId));
+            }
+
+            if (campusId != null)
+            {
+                posts = posts.Where(p => p.CampusId.Equals(campusId));
+            }
+
+            if (courseId != null)
+            {
+                posts = posts.Where(p => p.CourseId.Equals(courseId));
             }
 
             return await posts
