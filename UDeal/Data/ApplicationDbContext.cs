@@ -37,6 +37,9 @@ namespace UDeal.Data
             modelBuilder.Entity<IdentityUserRole<string>>(b => b.ToTable("UserRoles"));
 
             modelBuilder.Entity<Favourite>().HasKey(o => new { o.UserId, o.PostId });
+            modelBuilder.Entity<Post>()
+                .Property(p => p.Created)
+                .HasDefaultValueSql("datetime('now','localtime')");
 
             modelBuilder.Seed();
         }

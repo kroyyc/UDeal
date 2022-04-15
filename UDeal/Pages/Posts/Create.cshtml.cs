@@ -75,7 +75,7 @@ namespace UDeal.Pages.Posts
                     course = new Course
                     {
                         Name = CourseName,
-                        SchoolId = (int)user.SchoolId,
+                        SchoolId = user.SchoolId ?? -1,
                         School = user.School
                     };
                     _context.Courses.Add(course);
