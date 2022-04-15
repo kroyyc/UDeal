@@ -37,6 +37,12 @@
             @Html.DisplayFor(model => model.Post.Condition)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.Campus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.Campus.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Post.Price)
         </dt>
         <dd class="col-sm-10">
@@ -67,10 +73,10 @@
             @Html.DisplayFor(model => model.Post.User.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Campus)
+            @Html.DisplayNameFor(model => model.Post.Course)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Post.Campus.Name)
+            @Html.DisplayFor(model => model.Post.Course.Name)
         </dd>
     </dl>
     
