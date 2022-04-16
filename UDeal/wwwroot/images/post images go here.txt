@@ -1,6 +1,0 @@
-﻿namespace UDeal.wwwroot.images
-{
-    public class post_images_go_here
-    {
-    }
-}
