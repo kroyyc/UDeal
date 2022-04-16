@@ -1,4 +1,4 @@
 ﻿# Un/comment to commit post images 
-#*
-#!.gitignore
-#!*.txt
+*
+!.gitignore
+!*.txt
