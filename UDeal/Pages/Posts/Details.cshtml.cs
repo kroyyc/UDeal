@@ -46,6 +46,7 @@ namespace UDeal.Pages.Posts
                 .Include(p => p.Category)
                 .Include(p => p.Course)
                 .Include(p => p.Campus)
+                .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             PosterContact = await _context.Contacts.Where(c => c.UserId == Post.UserId).FirstOrDefaultAsync();

@@ -189,7 +189,10 @@
 
 
 <div>
-    <a role = "button" class = "btn btn-outline-info" asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a> |
+    @if (User.Identity.Name == Model.Post.User.Email)
+    {
+        <a role = "button" class = "btn btn-outline-info" asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a>     
+    }
     <button class="btn btn-outline-secondary" onclick="history.go(-1); return false;">Back to List</button>
 </div>
 
