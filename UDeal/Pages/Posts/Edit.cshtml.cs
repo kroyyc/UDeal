@@ -94,7 +94,6 @@ namespace UDeal.Pages.Posts
                     }
                 }
             }
-
             _context.Attach(Post).State = EntityState.Modified;
 
             try
