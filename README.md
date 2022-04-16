@@ -51,6 +51,12 @@ student@ucalgary.ca
 Test123!
 ```
 
-To create an account, you must provide an email which matches the port-secondary institution daomain.
+To create an account, you must provide an email which matches the port-secondary institution domain. For example, a UCalgary account must end in '@ucalgary.ca'
 
-![image](https://user-images.githubusercontent.com/47361247/163658140-10e12867-df80-4ded-a031-8769de168303.png)
+![image](https://user-images.githubusercontent.com/47361247/163658188-f279be0c-30c4-4c0d-a931-1a93e93daa95.png)
+
+Once you register you need to click the "confirm email" link. In a production system, UDeal would send a verification email so for demo purposes you can use a fake email.
+
+![image](https://user-images.githubusercontent.com/47361247/163658250-c5a2f0ca-8779-4acb-9fe3-872b08e9305c.png)
+
+After confirming, you must login again with your newly created username and paassword. You can now begin browsing and posting on UDeal as it is meant to be. A collection of fair priced second-hand items for sale amongst fellow students. Enjoy!
