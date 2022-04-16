@@ -55,12 +55,12 @@ namespace UDeal.Pages.Posts
             {
                 PosterContact = new Contact
                 {
-                    AlternateEmail = User.Identity.Name
+                    AlternateEmail = Post.User.Email
                 };
             }
             else if (PosterContact.AlternateEmail == null)
             {
-                PosterContact.AlternateEmail = User.Identity.Name;
+                PosterContact.AlternateEmail = Post.User.Email;
             }
 
             if (_signInManager.IsSignedIn(User))
