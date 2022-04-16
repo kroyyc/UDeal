@@ -29,3 +29,28 @@ UDeal is built using ASP.NET and it requires an installation of .NET 5.0. It is 
 7. You should see a web broswer open with the UDeal UI
 
 ![image](https://user-images.githubusercontent.com/47361247/163657026-946d554b-8738-4d50-85e0-d5e3408791c1.png)
+
+You will see the seeded posts and can begin searching through. If you wish to view the details of the posts (contact info, description, etc) you must be logged in. We have provided a couple accounts of different roles, otherwise you can create a new account.
+
+ 
+Admin account
+```
+admin@email.local
+Admin123!
+```
+
+Moderator account
+```
+moderator@ucalgary.ca
+Moderator123!
+```
+
+Student account
+```
+student@ucalgary.ca
+Test123!
+```
+
+To create an account, you must provide an email which matches the port-secondary institution daomain.
+
+![image](https://user-images.githubusercontent.com/47361247/163658140-10e12867-df80-4ded-a031-8769de168303.png)
