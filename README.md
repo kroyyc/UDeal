@@ -2,6 +2,8 @@
 
 UDeal is a post-sedondary student only second-hand buy and sell platform
 
+[API Documentation](https://documenter.getpostman.com/view/19199386/Uyr5nJwh)
+
 UDeal is built using ASP.NET and it requires an installation of .NET 5.0. It is most easily ran using Visual Studio:
 
 1. Open Visual Studio and select "Clone a repository"
