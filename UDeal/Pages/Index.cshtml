@@ -47,10 +47,14 @@
                     </div>
                     <div class="row form-group m-2 flex-fill">
                         <select name="course" class="form-control" asp-items="ViewBag.SchoolCourses" asp-for="@Model.Course" onchange="filterForm.submit()">
-                            <option value="" selected>Affiliated Course</option>
+                            <option value="" selected>All Courses</option>
                         </select>
                     </div>
                 }
+
+                <div class="row form-group m-2 flex-fill">
+                    <a href="/" role="button" class="btn btn-outline-danger">Clear search</a>
+                </div>
 
                 <input name="search" type="hidden" value="@Model.Search"/>
             </form>
@@ -76,8 +80,8 @@
                 {
                     @foreach (Post p in Model.Posts)
                     {
-                        <div class="card" style="width: 290px; margin: 10px;">
-                            <img src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
+                        <div class="card" style="width: 290px; margin: 10px; max-height: 400px">
+                            <img style="max-height: 220px" src="@(Model.Images.Where(i => i.PostId == p.Id).Any() ? "/images/" + Model.Images.Where(i => i.PostId == p.Id).First().Name : "https://via.placeholder.com/300")" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">@p.Title</h5>
                                 @if (p.Type == PostType.Selling)
