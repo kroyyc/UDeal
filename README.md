@@ -33,19 +33,19 @@ UDeal is built using ASP.NET and it requires an installation of .NET 5.0. It is 
 You will see the seeded posts and can begin searching through. If you wish to view the details of the posts (contact info, description, etc) you must be logged in. We have provided a couple accounts of different roles, otherwise you can create a new account.
 
  
-Admin account
+Admin account - who can manage which schools, campuses, and posts are within the system.
 ```
 admin@email.local
 Admin123!
 ```
 
-Moderator account
+Moderator account - who have the ability to delete posts made by their classmates. i.e this moderator can only manage UCalgary posts.
 ```
 moderator@ucalgary.ca
 Moderator123!
 ```
 
-Student account
+Student account - who can only create, edit and delte their own posts.
 ```
 student@ucalgary.ca
 Test123!
@@ -59,4 +59,16 @@ Once you register you need to click the "confirm email" link. In a production sy
 
 ![image](https://user-images.githubusercontent.com/47361247/163658250-c5a2f0ca-8779-4acb-9fe3-872b08e9305c.png)
 
-After confirming, you must login again with your newly created username and paassword. You can now begin browsing and posting on UDeal as it is meant to be. A collection of fair priced second-hand items for sale amongst fellow students. Enjoy!
+After confirming, you must login again with your newly created username and paassword. You can now begin browsing and posting on UDeal as it is meant to be. A collection of fair priced second-hand items for sale amongst fellow students. 
+
+You have the option to create posts for items you are selling and looking for.
+
+![image](https://user-images.githubusercontent.com/47361247/163658344-3904520d-f8aa-4c65-ad9c-d1c28babba53.png)
+
+If you see a post you like, add it to your favourites!
+
+![image](https://user-images.githubusercontent.com/47361247/163658371-4b7dc4c6-ede1-48d0-9e78-be0c4d95447b.png)
+
+You can also manage you profile and specify you contact information so other users can inquire about your ads. Also, if your school has different campuses stored in UDeal's database, you can specify which one you prefer.
+
+![image](https://user-images.githubusercontent.com/47361247/163658412-09c127cd-367e-472b-8dcc-8d9242110a3c.png)
