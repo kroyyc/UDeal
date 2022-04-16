@@ -25,3 +25,5 @@ UDeal is built using ASP.NET and it requires an installation of .NET 5.0. It is 
 ![image](https://user-images.githubusercontent.com/47361247/163654475-c9298e0a-afcf-4f7d-9b39-d1d634dae858.png)
 
 7. You should see a web broswer open with the UDeal UI
+
+![image](https://user-images.githubusercontent.com/47361247/163657026-946d554b-8738-4d50-85e0-d5e3408791c1.png)
